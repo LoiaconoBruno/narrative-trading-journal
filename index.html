@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bitácora sociohistórica</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .aviso { background: var(--surface-2); border-left: 4px solid var(--warn); padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; }
+    .prop { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; }
+    .prop h3 { margin: 0; font-size: 1rem; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .prop p { margin: 0; font-size: 0.9rem; }
+    .lista { display: grid; gap: 10px; }
+    .cierre { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .cierre input { width: auto; max-width: 160px; }
+    .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 500px) { .dos { grid-template-columns: 1fr; } }
+    .pos { color: var(--ok); } .neg { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <h1>Bitácora sociohistórica</h1>
+    <p>Cada propuesta llega con su tesis histórica y cultural; una persona la aprueba o la rechaza. Con plata simulada, la bitácora mide si el humano en el circuito agrega valor o es un sello de goma, y si la confianza declarada está calibrada.</p>
+  </header>
+
+  <main>
+    <p class="aviso">Paper trading: plata simulada, precios que cargás vos. No consulta mercados ni recomienda inversiones. Los activos del ejemplo son ficticios.</p>
+    <div class="layout">
+      <section class="card" aria-labelledby="t-nueva">
+        <h2 id="t-nueva">Nueva propuesta</h2>
+        <form id="form" novalidate>
+          <div class="dos">
+            <div><label for="f-activo">Activo</label><input type="text" id="f-activo" required></div>
+            <div><label for="f-dir">Dirección</label><select id="f-dir"><option value="compra">Compra</option><option value="venta">Venta</option></select></div>
+            <div><label for="f-fecha">Fecha de la tesis</label><input type="text" id="f-fecha" placeholder="AAAA-MM-DD" inputmode="numeric"></div>
+            <div><label for="f-precio">Precio de entrada</label><input type="number" id="f-precio" min="0" step="any"></div>
+          </div>
+          <label for="f-tesis">Tesis (historia, contexto cultural, narrativa)</label>
+          <textarea id="f-tesis" rows="3"></textarea>
+          <label for="f-analogo">Episodio histórico parecido</label>
+          <input type="text" id="f-analogo">
+          <label for="f-conf">Confianza <span class="val" id="v-conf">60 %</span></label>
+          <input type="range" id="f-conf" min="0" max="100" step="5" value="60">
+          <label for="f-riesgos">Riesgos</label>
+          <input type="text" id="f-riesgos">
+          <p class="small" id="f-error" role="alert" style="color:var(--bad)"></p>
+          <button class="primary" type="submit">Agregar propuesta</button>
+        </form>
+        <h3>Datos</h3>
+        <div class="row">
+          <button id="ejemplo">Cargar ejemplo ficticio</button>
+          <button id="exportar">Exportar JSON</button>
+          <button id="importar-btn">Importar JSON</button><input type="file" id="importar" accept="application/json" hidden>
+          <button id="borrar">Borrar todo</button>
+        </div>
+      </section>
+
+      <div style="display:grid; gap:16px; min-width:0">
+        <section class="card" aria-live="polite">
+          <h2>¿El humano agrega valor?</h2>
+          <div class="stats" id="stats"></div>
+          <p class="small muted" id="lectura"></p>
+          <canvas id="g-cal" aria-label="Calibración: confianza declarada contra tasa de acierto"></canvas>
+        </section>
+        <section class="card">
+          <h2>Propuestas</h2>
+          <div class="lista" id="lista"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>Si las tesis las escribe un modelo de lenguaje sobre fechas pasadas, el modelo puede "saber" lo que pasó después: la bitácora solo controla las fechas, no lo que el modelo sabe.</footer>
+
+  <script src="src/grafico.js"></script>
+  <script src="src/bitacora.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

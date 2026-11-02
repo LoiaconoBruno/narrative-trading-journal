@@ -1,0 +1,10 @@
+{
+  "name": "ia-predictiva-sociohistorica",
+  "version": "0.1.0",
+  "description": "Bitácora de paper trading con tesis histórica y validación humana: ¿el humano agrega valor?",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  }
+}
