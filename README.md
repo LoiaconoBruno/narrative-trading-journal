@@ -1,4 +1,19 @@
-# Bitácora sociohistórica
+<div align="center">
+
+# Narrative Trading Journal
+
+**Bitácora sociohistórica.** Paper trading con tesis históricas y validación humana: ¿el humano en el circuito agrega valor o es un sello de goma?
+
+[**▶ Probala en vivo**](https://loiaconobruno.github.io/narrative-trading-journal/) · [Cómo funciona](#cómo-funciona) · [Limitaciones](#limitaciones)
+
+[![Tests](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/tests.yml/badge.svg)](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/tests.yml)
+![Dependencias: 0](https://img.shields.io/badge/dependencias-0-brightgreen)
+![HTML, CSS y JavaScript](https://img.shields.io/badge/HTML%20%C2%B7%20CSS%20%C2%B7%20JS-sin%20build-f7df1e)
+[![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue)](LICENSE)
+
+<img src="docs/captura.png" alt="Captura de Narrative Trading Journal" width="800">
+
+</div>
 
 Bitácora de **paper trading** (plata simulada) para la idea "IA predictiva con trasfondo sociohistórico". Cada propuesta llega con una **tesis** sobre la historia y el contexto cultural del activo, un **episodio histórico parecido**, una **confianza** y sus **riesgos**. Una persona la **aprueba o la rechaza**. Cuando se cierra con un precio simulado, la bitácora mide:
 
@@ -13,11 +28,23 @@ La idea propone que una IA arme el análisis y un humano decida. Antes de constr
 
 ## Instalación
 
-No hace falta instalar nada. Es una página estática sin dependencias. Para correr los tests hace falta Node 18 o más nuevo.
+No hace falta instalar nada: **[abrila en el navegador](https://loiaconobruno.github.io/narrative-trading-journal/)**.
+
+Para usarla sin conexión o modificarla:
+
+```bash
+git clone https://github.com/LoiaconoBruno/narrative-trading-journal.git
+```
+
+Después abrí `index.html` con doble clic. No hay dependencias ni paso de build. Para correr los tests hace falta Node 18 o más nuevo:
+
+```bash
+npm test
+```
 
 ## Uso
 
-Abrí `index.html` con doble clic. Las propuestas se guardan solo en ese navegador.
+Abrí la [demo en vivo](https://loiaconobruno.github.io/narrative-trading-journal/) o `index.html` con doble clic. Las propuestas se guardan solo en ese navegador.
 
 Ejemplo con los datos ficticios:
 

@@ -1,10 +1,16 @@
 {
-  "name": "ia-predictiva-sociohistorica",
+  "name": "narrative-trading-journal",
   "version": "0.1.0",
-  "description": "Bitácora de paper trading con tesis histórica y validación humana: ¿el humano agrega valor?",
+  "description": "Bitácora de paper trading con tesis narrativa y validación humana, calibración y control de anticipación.",
   "private": true,
   "license": "MIT",
   "scripts": {
     "test": "node --test"
-  }
+  },
+  "homepage": "https://loiaconobruno.github.io/narrative-trading-journal/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoiaconoBruno/narrative-trading-journal.git"
+  },
+  "author": "Bruno Loiacono"
 }
