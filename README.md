@@ -4,7 +4,7 @@
 
 **Bitácora sociohistórica.** Paper trading con tesis históricas y validación humana: ¿el humano en el circuito agrega valor o es un sello de goma?
 
-[**▶ Probala en vivo**](https://loiaconobruno.github.io/narrative-trading-journal/) · [Cómo funciona](#cómo-funciona) · [Limitaciones](#limitaciones)
+[**▶ Probala en vivo**](https://loiaconobruno.github.io/narrative-trading-journal/) · [**📄 Paper y guía**](https://loiaconobruno.github.io/narrative-trading-journal/guia.html) · [Cómo funciona](#cómo-funciona) · [Limitaciones](#limitaciones)
 
 [![Tests](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/tests.yml/badge.svg)](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/tests.yml)
 ![Dependencias: 0](https://img.shields.io/badge/dependencias-0-brightgreen)
@@ -83,6 +83,10 @@ npm test
 - Comparar contra un índice de referencia.
 - Correrla unos meses con 10 activos y ver si el filtro humano mejora algo.
 - Leer *Narrative Economics*, de Robert Shiller (2019).
+
+## Paper de uso y guía
+
+[`guia.html`](https://loiaconobruno.github.io/narrative-trading-journal/guia.html) (fuente en [`docs/guia.md`](docs/guia.md)) tiene un paper de uso paso a paso y una guía de unas 20 páginas sobre la idea de fondo, con citas a los especialistas del tema.
 
 ## Licencia
 
