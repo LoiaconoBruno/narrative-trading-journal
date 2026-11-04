@@ -335,7 +335,43 @@ Una herramienta que evalúa predicciones financieras con dinero simulado es inoc
 
 **La honestidad de las métricas.** El mayor riesgo ético de un sistema de predicción es mostrar sus aciertos y esconder sus errores. La bitácora está diseñada para lo contrario: cierra las rechazadas, excluye las tesis con anticipación, compara con la regla más simple y muestra el Brier. Cualquier versión futura con IA debería conservar esa transparencia, y publicar las métricas completas antes de pedirle a nadie que confíe en sus propuestas.
 
-### 22. Del modelo al código
+### 22. Otras maneras de predecir y de evaluar predicciones
+
+La bitácora es un dispositivo para evaluar a un pronosticador. Hay otros dispositivos, más grandes y más estudiados, que muestran cómo se puede organizar la predicción colectiva y qué rinde mejor.
+
+#### 22.1 Mercados de predicción
+
+Un **mercado de predicción** es un mercado en el que se compran y venden contratos que pagan según el resultado de un evento futuro: por ejemplo, un contrato que paga un peso si un candidato gana una elección y nada si pierde. El precio del contrato, entre 0 y 1, se puede leer como la probabilidad que el mercado le asigna al evento. Desde 1988, la Universidad de Iowa opera los Iowa Electronic Markets, con dinero real pero montos chicos, con fines de investigación. Joyce Berg, Robert Forsythe, Forrest Nelson y Thomas Rietz resumieron en 2008 una docena de años de resultados: en las elecciones presidenciales de Estados Unidos, los precios del mercado fueron, en la mayoría de los casos, más precisos que las encuestas publicadas en las mismas fechas.
+
+Justin Wolfers y Eric Zitzewitz revisaron en 2004 (*Journal of Economic Perspectives*, 18(2), 107–126) la evidencia sobre mercados de predicción y concluyeron que suelen ser buenos agregadores de información, con limitaciones: funcionan peor cuando hay pocos participantes, cuando el evento es muy lejano o cuando hay incentivos para manipular el precio.
+
+Para la idea, los mercados de predicción son una referencia útil: si existe un mercado sobre un evento, la tesis narrativa tiene que explicar no solo por qué va a pasar algo, sino por qué el mercado le asigna una probabilidad equivocada. Es la versión aplicada de la pregunta de Fama (sección 13.1).
+
+#### 22.2 Torneos de pronóstico
+
+Entre 2011 y 2015, la agencia de investigación de inteligencia de Estados Unidos organizó un torneo en el que varios equipos competían pronosticando cientos de eventos geopolíticos. El equipo Good Judgment Project, liderado por Philip Tetlock y Barbara Mellers, ganó con amplitud. Mellers y colaboradores publicaron en 2014 (*Psychological Science*, 25(5), 1106–1115) qué funcionó: un entrenamiento breve en razonamiento probabilístico (usar tasas base, evitar sesgos comunes), trabajar en equipos que discutían sus pronósticos y seleccionar a los mejores pronosticadores del año anterior para formar equipos de élite, los "superpronosticadores".
+
+Jonathan Baron y colaboradores mostraron además, con datos del mismo torneo (*Decision Analysis*, 11(2), 133–145, 2014), que el promedio de muchos pronósticos individuales se mejora si se lo **extremiza**, es decir, si se lo aleja un poco del 50 %. La razón es que cada pronosticador tiene solo parte de la información, y al promediar, la confianza colectiva queda más tibia de lo que justifica la información sumada.
+
+La bitácora mide exactamente lo que medía el torneo: el puntaje de Brier de cada pronóstico. La diferencia es de escala: el torneo tenía miles de pronósticos por participante; la bitácora, al principio, decenas.
+
+#### 22.3 Modelos de lenguaje que pronostican
+
+Desde 2023, varios grupos estudiaron si los modelos de lenguaje pueden pronosticar eventos futuros. Danny Halawi, Fred Zhang, Chen Yueh-Han y Jacob Steinhardt construyeron en 2024 un sistema que busca noticias recientes, las resume y genera pronósticos sobre preguntas de plataformas de pronóstico, y lo evaluaron solo con preguntas que se resolvieron después de la fecha de corte de los datos del modelo, precisamente para evitar el sesgo de anticipación de la sección 16.3. Encontraron que el sistema se acercaba al promedio de los pronosticadores humanos de esas plataformas, sin superarlo en general, y que combinar sus pronósticos con los humanos mejoraba ambos.
+
+Ese diseño de evaluación es el que la idea necesita: preguntas que se resuelven después de la fecha de corte, comparación con una referencia humana y medición con Brier. La bitácora ya tiene la estructura; le falta la IA y el volumen.
+
+### 23. Narrativas que se pueden medir
+
+La economía narrativa de Shiller no se quedó en la teoría: hay métodos para medir narrativas en textos, y una IA como la que la idea propone podría usarlos.
+
+- **Frecuencia de términos.** Shiller mismo usó la frecuencia de palabras y frases en archivos de diarios y libros digitalizados para seguir la evolución de narrativas como "burbuja inmobiliaria" o "la tecnología quita empleos": cuándo aparecen, cuándo llegan a su pico y cuándo se apagan. La curva se parece a la de una epidemia, como él proponía.
+- **Índices de incertidumbre.** Scott Baker, Nicholas Bloom y Steven Davis construyeron en 2016 (*Quarterly Journal of Economics*, 131(4), 1593–1636) un índice de incertidumbre de política económica contando, en los principales diarios, los artículos que mencionan a la vez términos de economía, de incertidumbre y de política. El índice sube en elecciones disputadas, crisis fiscales y guerras, y se asocia con caídas de la inversión. Es una narrativa convertida en serie de tiempo.
+- **Sentimiento en el texto.** Paul Tetlock (homónimo del de los pronósticos) mostró en 2007 (*Journal of Finance*, 62(3), 1139–1168) que la proporción de palabras negativas en una columna diaria del *Wall Street Journal* predecía caídas de corto plazo de los precios, seguidas de una reversión. El pesimismo de los medios movía el mercado, pero transitoriamente.
+
+Estas medidas sugieren un uso más modesto y más verificable de la idea: en vez de una IA que cuente una historia y prediga un precio, una que mida la intensidad de una narrativa en los textos y la registre con fecha. La bitácora podría guardar, junto con cada tesis, una medida de la narrativa en el momento de escribirla, y después ver si las tesis escritas en el pico de una narrativa rinden distinto que las escritas al principio. Es la hipótesis implícita en la tesis de ACME ("recién empieza a llegar al público") y en la de BETA ("narrativa saturada"), convertida en algo que se puede medir.
+
+### 24. Del modelo al código
 
 | Concepto | En `src/bitacora.js` | Qué produce |
 |---|---|---|
@@ -357,7 +393,7 @@ r.valorHumano;    // ≈ −0,0067
 r.brier;          // ≈ 0,219
 ```
 
-### 23. Ejercicios
+### 25. Ejercicios
 
 1. Con el ejemplo, calculá a mano qué habría pasado con el valor del humano si hubiera aprobado EPSI. ¿Y si además hubiera rechazado GAMA?
 2. Escribí una tesis narrativa sobre un activo inventado, con dos analogías históricas y sus diferencias. Fijá la fecha de cierre de antemano.
@@ -367,7 +403,7 @@ r.brier;          // ≈ 0,219
 6. ¿Cuántas propuestas necesitarías para que un valor del humano de 2 puntos porcentuales fuera distinguible del azar, si la dispersión de los rendimientos es de 15 puntos?
 7. Leé el primer capítulo de *Narrative Economics* de Shiller y anotá qué métricas propone para medir una narrativa.
 
-### 24. Glosario
+### 26. Glosario
 
 - **Paper trading:** operaciones con dinero simulado.
 - **Tesis:** el razonamiento que justifica una propuesta.
@@ -384,7 +420,7 @@ r.brier;          // ≈ 0,219
 - **Economía narrativa:** estudio de cómo las historias que circulan afectan los fenómenos económicos.
 - **Hipótesis de los mercados eficientes:** los precios reflejan la información disponible.
 
-### 25. Conclusión
+### 27. Conclusión
 
 La idea de una IA que predice con trasfondo sociohistórico se apoya en una intuición respaldada por la investigación: las narrativas mueven la economía, como mostró Shiller, y las manías tienen patrones que se repiten, como describieron Kindleberger y Perez. Pero también choca con tres advertencias igual de sólidas. Los mercados incorporan rápido lo que todos saben (Fama), y quienes operan activamente suelen rendir menos que el mercado (Barber y Odean). Las analogías históricas se eligen mal y se cuentan mal (Neustadt y May; Garber y Goldgar sobre los tulipanes). Y los humanos que supervisan sistemas automáticos tienden a volverse sellos de goma o a desconfiar sin razón (Bainbridge; Parasuraman y Riley; Dietvorst y Logg).
 
@@ -395,7 +431,10 @@ La herramienta no responde si la idea funciona. Construye lo necesario para resp
 - Asimov, I. (1951). *Foundation*. Gnome Press.
 - Bailey, D. H., Borwein, J. M., López de Prado, M., & Zhu, Q. J. (2014). Pseudo-mathematics and financial charlatanism: The effects of backtest overfitting on out-of-sample performance. *Notices of the American Mathematical Society*, 61(5), 458–471. https://doi.org/10.1090/noti1105
 - Bainbridge, L. (1983). Ironies of automation. *Automatica*, 19(6), 775–779. https://doi.org/10.1016/0005-1098(83)90046-8
+- Baker, S. R., Bloom, N., & Davis, S. J. (2016). Measuring economic policy uncertainty. *Quarterly Journal of Economics*, 131(4), 1593–1636. https://doi.org/10.1093/qje/qjw024
 - Barber, B. M., & Odean, T. (2000). Trading is hazardous to your wealth: The common stock investment performance of individual investors. *Journal of Finance*, 55(2), 773–806. https://doi.org/10.1111/0022-1082.00226
+- Baron, J., Mellers, B. A., Tetlock, P. E., Stone, E., & Ungar, L. H. (2014). Two reasons to make aggregated probability forecasts more extreme. *Decision Analysis*, 11(2), 133–145. https://doi.org/10.1287/deca.2014.0293
+- Berg, J., Forsythe, R., Nelson, F., & Rietz, T. (2008). Results from a dozen years of election futures markets research. En C. R. Plott & V. L. Smith (Eds.), *Handbook of Experimental Economics Results* (vol. 1, pp. 742–751). Elsevier. https://doi.org/10.1016/S1574-0722(07)00080-7
 - Brier, G. W. (1950). Verification of forecasts expressed in terms of probability. *Monthly Weather Review*, 78(1), 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
 - Dawes, R. M., Faust, D., & Meehl, P. E. (1989). Clinical versus actuarial judgment. *Science*, 243(4899), 1668–1674. https://doi.org/10.1126/science.2648573
 - Dietvorst, B. J., Simmons, J. P., & Massey, C. (2015). Algorithm aversion: People erroneously avoid algorithms after seeing them err. *Journal of Experimental Psychology: General*, 144(1), 114–126. https://doi.org/10.1037/xge0000033
@@ -404,6 +443,7 @@ La herramienta no responde si la idea funciona. Construye lo necesario para resp
 - Garber, P. M. (1989). Tulipmania. *Journal of Political Economy*, 97(3), 535–560. https://doi.org/10.1086/261615
 - Goldgar, A. (2007). *Tulipmania: Money, Honor, and Knowledge in the Dutch Golden Age*. University of Chicago Press. ISBN 978-0-226-30125-9.
 - Green, K. C., & Armstrong, J. S. (2007). Structured analogies for forecasting. *International Journal of Forecasting*, 23(3), 365–376. https://doi.org/10.1016/j.ijforecast.2007.05.005
+- Halawi, D., Zhang, F., Yueh-Han, C., & Steinhardt, J. (2024). *Approaching human-level forecasting with language models*. arXiv:2402.18563. https://doi.org/10.48550/arXiv.2402.18563
 - Harvey, C. R., Liu, Y., & Zhu, H. (2016). … and the cross-section of expected returns. *Review of Financial Studies*, 29(1), 5–68. https://doi.org/10.1093/rfs/hhv059
 - Kahneman, D., & Lovallo, D. (1993). Timid choices and bold forecasts: A cognitive perspective on risk taking. *Management Science*, 39(1), 17–31. https://doi.org/10.1287/mnsc.39.1.17
 - Kindleberger, C. P. (1978). *Manias, Panics, and Crashes: A History of Financial Crises*. Basic Books.
@@ -413,6 +453,7 @@ La herramienta no responde si la idea funciona. Construye lo necesario para resp
 - Logg, J. M., Minson, J. A., & Moore, D. A. (2019). Algorithm appreciation: People prefer algorithmic to human judgment. *Organizational Behavior and Human Decision Processes*, 151, 90–103. https://doi.org/10.1016/j.obhdp.2018.12.005
 - Mackay, C. (1841). *Memoirs of Extraordinary Popular Delusions and the Madness of Crowds*. Londres: Richard Bentley.
 - Meehl, P. E. (1954). *Clinical versus Statistical Prediction: A Theoretical Analysis and a Review of the Evidence*. University of Minnesota Press.
+- Mellers, B., Ungar, L., Baron, J., Ramos, J., Gurcay, B., Fincher, K., et al. (2014). Psychological strategies for winning a geopolitical forecasting tournament. *Psychological Science*, 25(5), 1106–1115. https://doi.org/10.1177/0956797614524255
 - Murphy, A. H. (1973). A new vector partition of the probability score. *Journal of Applied Meteorology*, 12(4), 595–600. https://doi.org/10.1175/1520-0450(1973)012<0595:ANVPOT>2.0.CO;2
 - Neustadt, R. E., & May, E. R. (1986). *Thinking in Time: The Uses of History for Decision Makers*. Free Press. ISBN 978-0-02-922790-2.
 - Odean, T. (1998). Volume, volatility, price, and profit when all traders are above average. *Journal of Finance*, 53(6), 1887–1934. https://doi.org/10.1111/0022-1082.00078
@@ -424,5 +465,7 @@ La herramienta no responde si la idea funciona. Construye lo necesario para resp
 - Shiller, R. J. (2017). Narrative economics. *American Economic Review*, 107(4), 967–1004. https://doi.org/10.1257/aer.107.4.967
 - Shiller, R. J. (2019). *Narrative Economics: How Stories Go Viral and Drive Major Economic Events*. Princeton University Press. ISBN 978-0-691-18229-2.
 - Skitka, L. J., Mosier, K. L., & Burdick, M. (1999). Does automation bias decision-making? *International Journal of Human-Computer Studies*, 51(5), 991–1006. https://doi.org/10.1006/ijhc.1999.0252
+- Tetlock, P. C. (2007). Giving content to investor sentiment: The role of media in the stock market. *Journal of Finance*, 62(3), 1139–1168. https://doi.org/10.1111/j.1540-6261.2007.01232.x
 - Tetlock, P. E. (2005). *Expert Political Judgment: How Good Is It? How Can We Know?* Princeton University Press. ISBN 978-0-691-12302-8.
 - Turchin, P. (2008). Arise 'cliodynamics'. *Nature*, 454, 34–35. https://doi.org/10.1038/454034a
+- Wolfers, J., & Zitzewitz, E. (2004). Prediction markets. *Journal of Economic Perspectives*, 18(2), 107–126. https://doi.org/10.1257/0895330041371321
