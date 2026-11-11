@@ -1,81 +1,190 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bitácora sociohistórica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Narrative Trading · propuestas de una IA que lee noticias, medidas</title>
+  <meta name="description" content="Cada día hábil, Claude lee noticias reales de GDELT, actualiza índices narrativos por activo y propone compra o venta a 5 ruedas. Cada tesis queda sellada por un commit antes del resultado y la bitácora mide aciertos, calibración y tu valor como humano. Plata simulada.">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f6f8">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1015">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233a4bd6'/%3E%3Cpath d='M7 21l6-6 4 4 8-9' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/sistema.css">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .aviso { background: var(--surface-2); border-left: 4px solid var(--warn); padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; }
-    .prop { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: grid; gap: 6px; }
-    .prop h3 { margin: 0; font-size: 1rem; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .prop p { margin: 0; font-size: 0.9rem; }
-    .lista { display: grid; gap: 10px; }
-    .cierre { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-    .cierre input { width: auto; max-width: 160px; }
-    .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    @media (max-width: 500px) { .dos { grid-template-columns: 1fr; } }
-    .pos { color: var(--ok); } .neg { color: var(--bad); }
-  </style>
+  <script src="src/calendario.js" defer></script>
+  <script src="src/indices.js" defer></script>
+  <script src="src/bitacora.js" defer></script>
+  <script src="src/sellos.js" defer></script>
+  <script src="src/costos.js" defer></script>
+  <script src="src/ejemplo.js" defer></script>
+  <script src="src/graficos.js" defer></script>
+  <script src="src/app.js" defer></script>
 </head>
 <body>
-  <header class="top">
-    <h1>Bitácora sociohistórica</h1>
-    <p>Cada propuesta llega con su tesis histórica y cultural; una persona la aprueba o la rechaza. Con plata simulada, la bitácora mide si el humano en el circuito agrega valor o es un sello de goma, y si la confianza declarada está calibrada.</p>
-    <p class="guia-link"><a href="guia.html">📄 Paper de uso y guía de la idea →</a></p>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <header class="cabecera">
+    <div class="contenedor cabecera__fila">
+      <a class="marca" href="./">
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M7 21l6-6 4 4 8-9" fill="none" stroke="var(--superficie)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Narrative Trading
+      </a>
+      <nav aria-label="Enlaces">
+        <a href="guia.html">Paper y guía</a>
+        <a href="https://github.com/LoiaconoBruno/narrative-trading-journal">Código</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <p class="aviso">Paper trading: plata simulada, precios que cargás vos. No consulta mercados ni recomienda inversiones. Los activos del ejemplo son ficticios.</p>
-    <div class="layout">
-      <section class="card" aria-labelledby="t-nueva">
-        <h2 id="t-nueva">Nueva propuesta</h2>
-        <form id="form" novalidate>
-          <div class="dos">
-            <div><label for="f-activo">Activo</label><input type="text" id="f-activo" required></div>
-            <div><label for="f-dir">Dirección</label><select id="f-dir"><option value="compra">Compra</option><option value="venta">Venta</option></select></div>
-            <div><label for="f-fecha">Fecha de la tesis</label><input type="text" id="f-fecha" placeholder="AAAA-MM-DD" inputmode="numeric"></div>
-            <div><label for="f-precio">Precio de entrada</label><input type="number" id="f-precio" min="0" step="any"></div>
-          </div>
-          <label for="f-tesis">Tesis (historia, contexto cultural, narrativa)</label>
-          <textarea id="f-tesis" rows="3"></textarea>
-          <label for="f-analogo">Episodio histórico parecido</label>
-          <input type="text" id="f-analogo">
-          <label for="f-conf">Confianza <span class="val" id="v-conf">60 %</span></label>
-          <input type="range" id="f-conf" min="0" max="100" step="5" value="60">
-          <label for="f-riesgos">Riesgos</label>
-          <input type="text" id="f-riesgos">
-          <p class="small" id="f-error" role="alert" style="color:var(--bad)"></p>
-          <button class="primary" type="submit">Agregar propuesta</button>
-        </form>
-        <h3>Datos</h3>
-        <div class="row">
-          <button id="ejemplo">Cargar ejemplo ficticio</button>
-          <button id="exportar">Exportar JSON</button>
-          <button id="importar-btn">Importar JSON</button><input type="file" id="importar" accept="application/json" hidden>
-          <button id="borrar">Borrar todo</button>
-        </div>
+  <main id="contenido" tabindex="-1">
+    <div class="contenedor">
+      <div class="intro">
+        <h1>Una IA lee las noticias y propone. La bitácora mide si sirve.</h1>
+        <p>Cada día hábil, antes de la apertura de Nueva York, Claude lee noticias reales, actualiza cuatro índices por activo y propone compra o venta a 5 ruedas. Cada propuesta queda sellada por un commit antes de saber el resultado. Vos aprobás o rechazás, y la bitácora mide si agregás valor.</p>
+      </div>
+
+      <p class="aviso aviso--aviso aviso-fijo" role="note"><strong>Plata simulada.</strong> Esto no es una recomendación de inversión: es un experimento para medir si las propuestas de una IA sirven. Ni siquiera el umbral de abajo convierte una propuesta en un consejo.</p>
+
+      <div id="avisos" aria-live="polite"></div>
+
+      <section aria-labelledby="t-tablero">
+        <h2 id="t-tablero" class="visualmente-oculto">Resumen</h2>
+        <ul class="tablero" id="tablero"></ul>
       </section>
 
-      <div style="display:grid; gap:16px; min-width:0">
-        <section class="card" aria-live="polite">
-          <h2>¿El humano agrega valor?</h2>
-          <div class="stats" id="stats"></div>
-          <p class="small muted" id="lectura"></p>
-          <canvas id="g-cal" aria-label="Calibración: confianza declarada contra tasa de acierto"></canvas>
-        </section>
-        <section class="card">
-          <h2>Propuestas</h2>
-          <div class="lista" id="lista"></div>
-        </section>
+      <div class="pestanas" role="tablist" aria-label="Secciones">
+        <button type="button" role="tab" id="tab-hoy" aria-controls="p-hoy" aria-selected="true">Hoy</button>
+        <button type="button" role="tab" id="tab-indices" aria-controls="p-indices" aria-selected="false" tabindex="-1">Índices</button>
+        <button type="button" role="tab" id="tab-bitacora" aria-controls="p-bitacora" aria-selected="false" tabindex="-1">Bitácora</button>
+        <button type="button" role="tab" id="tab-metodo" aria-controls="p-metodo" aria-selected="false" tabindex="-1">Método</button>
       </div>
+
+      <!-- Hoy -->
+      <section role="tabpanel" id="p-hoy" aria-labelledby="tab-hoy" tabindex="0">
+        <div class="encabezado">
+          <h2 id="hoy-titulo">Propuestas de hoy</h2>
+          <p class="encabezado__meta" id="hoy-meta"></p>
+        </div>
+        <ol class="propuestas" id="propuestas"></ol>
+      </section>
+
+      <!-- Índices -->
+      <section role="tabpanel" id="p-indices" aria-labelledby="tab-indices" tabindex="0" hidden>
+        <div class="encabezado">
+          <h2>Índices narrativos</h2>
+          <p class="encabezado__meta" id="indices-meta"></p>
+        </div>
+        <div class="tabla-envoltura">
+          <table class="tabla tabla--indices" id="tabla-indices">
+            <caption class="visualmente-oculto">Valor de cada índice en la última rueda y cambio contra la anterior</caption>
+            <thead><tr><th scope="col">Activo</th><th scope="col">Atención</th><th scope="col">Tono</th><th scope="col">Riesgo</th><th scope="col">Momento</th><th scope="col">Artículos</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="campo campo--activo">
+          <label for="activo">Historia de</label>
+          <select id="activo"></select>
+        </div>
+        <div class="graficos" id="graficos-indices"></div>
+        <h3 class="subtitulo">Día por día: qué movió cada índice</h3>
+        <div class="dias" id="dias"></div>
+      </section>
+
+      <!-- Bitácora -->
+      <section role="tabpanel" id="p-bitacora" aria-labelledby="tab-bitacora" tabindex="0" hidden>
+        <div class="dos-columnas">
+          <section class="panel" aria-labelledby="t-calibracion">
+            <h2 id="t-calibracion">Calibración del sistema</h2>
+            <p class="ayuda">Cada punto es un tramo de confianza: cuánto dijo la IA (horizontal) contra cuánto acertó de verdad (vertical). Si está bien calibrada, los puntos caen sobre la diagonal.</p>
+            <div id="grafico-calibracion" class="grafico-calibracion"></div>
+            <div class="tabla-envoltura">
+              <table class="tabla tabla--compacta" id="tabla-calibracion">
+                <caption class="visualmente-oculto">Calibración por tramo de confianza</caption>
+                <thead><tr><th scope="col">Tramo</th><th scope="col"><abbr title="Cantidad de propuestas cerradas">n</abbr></th><th scope="col">Dijo</th><th scope="col">Acertó</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+          <section class="panel" aria-labelledby="t-umbral">
+            <h2 id="t-umbral">Umbral para pensar en plata real</h2>
+            <p class="ayuda">Una vara propia, explicada en «Método». Mientras no se cumplan los cuatro criterios, ni siquiera hay que pensarlo. Y cumplirlos tampoco convierte esto en una recomendación.</p>
+            <ul class="criterios" id="criterios"></ul>
+            <h3 class="subtitulo">Tu valor como humano</h3>
+            <p id="humano"></p>
+          </section>
+        </div>
+
+        <section class="panel" aria-labelledby="t-cerradas">
+          <div class="encabezado encabezado--panel">
+            <h2 id="t-cerradas">Propuestas cerradas</h2>
+            <div class="acciones">
+              <button type="button" class="btn" id="exportar">Exportar mis decisiones</button>
+              <label class="btn" for="importar">Importar decisiones</label>
+              <input type="file" id="importar" accept="application/json,.json" class="visualmente-oculto">
+            </div>
+          </div>
+          <p class="ayuda" id="cerradas-meta"></p>
+          <div class="tabla-envoltura">
+            <table class="tabla tabla--cerradas" id="tabla-cerradas">
+              <caption class="visualmente-oculto">Propuestas cerradas, de la más nueva a la más vieja</caption>
+              <thead><tr><th scope="col">Rueda</th><th scope="col">Activo</th><th scope="col">Propuesta</th><th scope="col">Confianza</th><th scope="col">Rendimiento</th><th scope="col">Resultado</th><th scope="col">Tu decisión</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn--fantasma" id="ver-mas" hidden>Ver más</button>
+        </section>
+      </section>
+
+      <!-- Método -->
+      <section role="tabpanel" id="p-metodo" aria-labelledby="tab-metodo" tabindex="0" hidden>
+        <div class="metodo">
+          <section class="panel" aria-labelledby="t-def">
+            <h2 id="t-def">Qué mide cada índice</h2>
+            <div id="definiciones"></div>
+          </section>
+          <section class="panel" aria-labelledby="t-sello">
+            <h2 id="t-sello">Sin trampa de anticipación</h2>
+            <ul class="lista">
+              <li>El pipeline corre antes de la apertura de Nueva York y no genera propuestas si el mercado ya abrió.</li>
+              <li>Cada día de propuestas es un archivo nuevo en <code>data/propuestas/</code> que nunca se edita. Guarda el SHA-256 del archivo anterior, así que cambiar uno viejo rompe la cadena desde ahí. La página recalcula la cadena cada vez que se abre.</li>
+              <li>El commit que agrega el archivo es el sello: si su hora es posterior a la apertura, o si el archivo cambió después, esas propuestas no cuentan en el resumen.</li>
+              <li>Tus decisiones cuentan solo si las tomaste antes de la apertura de esa rueda. Quedan en tu navegador con su hora; esa hora la pone tu reloj, no un commit.</li>
+              <li>La hora de un commit la puede falsear quien tenga acceso de escritura al repo. Los registros de GitHub Actions de cada corrida son el testigo externo.</li>
+            </ul>
+          </section>
+          <section class="panel" aria-labelledby="t-umbral-metodo">
+            <h2 id="t-umbral-metodo">El umbral, explicado</h2>
+            <ul class="lista" id="umbral-explicado"></ul>
+          </section>
+          <section class="panel" aria-labelledby="t-fuentes">
+            <h2 id="t-fuentes">Fuentes y términos</h2>
+            <ul class="lista">
+              <li><strong>Noticias:</strong> <a href="https://www.gdeltproject.org/">The GDELT Project</a>, archivos GKG 2.1 de cada 15 minutos, en inglés y traducidos de 65 idiomas. Sus términos permiten usar y redistribuir los datos citando a GDELT con un link a su sitio.</li>
+              <li><strong>Precios:</strong> <a href="https://twelvedata.com/">Twelve Data</a>, plan gratis. Los precios se usan solo dentro del pipeline y no se guardan ni se publican: acá aparece únicamente el rendimiento de cada propuesta, redondeado a 0,1 %, un dato derivado del que no se pueden reconstruir los precios (<a href="https://twelvedata.com/terms">términos, cláusula 2.2(c)</a>).</li>
+              <li><strong>IA:</strong> la API de Claude, de Anthropic. La key está en los secretos de GitHub Actions, nunca en el repo ni en esta página.</li>
+            </ul>
+          </section>
+          <section class="panel" aria-labelledby="t-costos">
+            <h2 id="t-costos">Costos</h2>
+            <p id="costos-medidos"></p>
+            <div class="tabla-envoltura">
+              <table class="tabla tabla--compacta" id="tabla-costos">
+                <caption>Estimación por mes antes de activar (21 ruedas)</caption>
+                <thead><tr><th scope="col">Modelo</th><th scope="col">Por rueda</th><th scope="col">Por mes</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="ayuda">Supuestos: 21.000 tokens de entrada por rueda (medido en caracteres con noticias reales de GDELT, a 3 caracteres por token) y entre 9.100 y 28.500 de salida, según cuánto razone el modelo. GDELT, Twelve Data (plan gratis), GitHub Actions y GitHub Pages no cuestan nada en un repo público.</p>
+          </section>
+        </div>
+      </section>
     </div>
   </main>
 
-  <footer>Si las tesis las escribe un modelo de lenguaje sobre fechas pasadas, el modelo puede "saber" lo que pasó después: la bitácora solo controla las fechas, no lo que el modelo sabe.</footer>
-
-  <script src="src/grafico.js"></script>
-  <script src="src/bitacora.js"></script>
-  <script src="src/app.js"></script>
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Noticias: <a href="https://www.gdeltproject.org/">The GDELT Project</a>. Precios: Twelve Data, solo rendimientos derivados. Propuestas: Claude, de Anthropic.</p>
+      <p>Plata simulada; no es una recomendación de inversión. Código bajo licencia MIT.</p>
+    </div>
+  </footer>
 </body>
 </html>
