@@ -1,0 +1,5 @@
+{
+  "modelo": "claude-opus-5-5",
+  "esfuerzo": { "clasificar": "low", "proponer": "medium" },
+  "articulosPorActivo": 20
+}

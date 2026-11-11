@@ -1,0 +1,17 @@
+{
+  "mercado": "Acciones que cotizan en Nueva York (NYSE y Nasdaq), en dólares",
+  "criterio": "Cuatro empresas argentinas o con operación central en Argentina, que cotizan en Nueva York, y seis grandes empresas de EE. UU. de sectores distintos. Todas son líquidas y salen seguido en las noticias. No es una recomendación: se puede editar.",
+  "horizonte": 5,
+  "activos": [
+    { "ticker": "MELI", "mic": "XNAS", "nombre": "MercadoLibre", "sector": "Comercio electrónico y pagos", "alias": ["mercadolibre", "mercado libre"] },
+    { "ticker": "YPF", "mic": "XNYS", "nombre": "YPF", "sector": "Petróleo y gas", "alias": ["ypf"] },
+    { "ticker": "GGAL", "mic": "XNAS", "nombre": "Grupo Financiero Galicia", "sector": "Bancos", "alias": ["grupo financiero galicia", "banco galicia", "banco de galicia"] },
+    { "ticker": "VIST", "mic": "XNYS", "nombre": "Vista Energy", "sector": "Petróleo y gas", "alias": ["vista energy", "vista oil"] },
+    { "ticker": "AAPL", "mic": "XNAS", "nombre": "Apple", "sector": "Tecnología", "alias": ["apple", "apple inc"] },
+    { "ticker": "MSFT", "mic": "XNAS", "nombre": "Microsoft", "sector": "Software", "alias": ["microsoft", "microsoft corp"] },
+    { "ticker": "NVDA", "mic": "XNAS", "nombre": "Nvidia", "sector": "Semiconductores", "alias": ["nvidia"] },
+    { "ticker": "KO", "mic": "XNYS", "nombre": "Coca-Cola", "sector": "Consumo masivo", "alias": ["coca-cola", "coca cola", "the coca-cola company"] },
+    { "ticker": "JPM", "mic": "XNYS", "nombre": "JPMorgan Chase", "sector": "Bancos", "alias": ["jpmorgan", "jp morgan", "jpmorgan chase"] },
+    { "ticker": "XOM", "mic": "XNYS", "nombre": "ExxonMobil", "sector": "Petróleo y gas", "alias": ["exxonmobil", "exxon mobil", "exxon"] }
+  ]
+}

@@ -1,0 +1,57 @@
+name: Pipeline diario
+
+# Cada día hábil a las 12:05 UTC (9:05 en Buenos Aires), antes de la apertura de Nueva York
+# (13:30 UTC con el horario de verano de EE. UU., 14:30 UTC sin él). GitHub puede demorar
+# el arranque: si el commit llega después de la apertura, esas propuestas no cuentan.
+on:
+  schedule:
+    - cron: "5 12 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      seco:
+        description: "Prueba en seco: solo noticias e índices, sin Claude ni precios y sin commit"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: pipeline
+  cancel-in-progress: false
+
+jobs:
+  correr:
+    # El horario programado corre solo si activaste el pipeline: variable PIPELINE_ACTIVO = si.
+    if: github.event_name == 'workflow_dispatch' || vars.PIPELINE_ACTIVO == 'si'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - run: npm ci --prefix pipeline --no-audit --no-fund
+      - name: Correr
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+          MODELO: ${{ vars.MODELO }}
+        run: node pipeline/correr.js ${{ inputs.seco && '--seco --salida=/tmp/seco' || '' }}
+      - name: Guardar los datos con un commit (el commit es el sello de las propuestas)
+        if: ${{ !inputs.seco }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then echo "Nada para guardar"; exit 0; fi
+          git commit -m "Datos de la rueda $(TZ=America/New_York date +%F)"
+          git pull --rebase
+          git push
+          gh api --method POST "repos/${{ github.repository }}/pages/builds" > /dev/null || echo "No se pudo pedir la actualización de Pages"
