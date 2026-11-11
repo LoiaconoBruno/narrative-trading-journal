@@ -5,7 +5,7 @@
   "activos": [
     { "ticker": "MELI", "mic": "XNAS", "nombre": "MercadoLibre", "sector": "Comercio electrónico y pagos", "alias": ["mercadolibre", "mercado libre"] },
     { "ticker": "YPF", "mic": "XNYS", "nombre": "YPF", "sector": "Petróleo y gas", "alias": ["ypf"] },
-    { "ticker": "GGAL", "mic": "XNAS", "nombre": "Grupo Financiero Galicia", "sector": "Bancos", "alias": ["grupo financiero galicia", "banco galicia", "banco de galicia"] },
+    { "ticker": "GGAL", "mic": "XNAS", "nombre": "Grupo Financiero Galicia", "sector": "Bancos", "alias": ["grupo financiero galicia", "banco galicia", "banco de galicia", "bank galicia", "group financial galicia", "galicia financial group"] },
     { "ticker": "VIST", "mic": "XNYS", "nombre": "Vista Energy", "sector": "Petróleo y gas", "alias": ["vista energy", "vista oil"] },
     { "ticker": "AAPL", "mic": "XNAS", "nombre": "Apple", "sector": "Tecnología", "alias": ["apple", "apple inc"] },
     { "ticker": "MSFT", "mic": "XNAS", "nombre": "Microsoft", "sector": "Software", "alias": ["microsoft", "microsoft corp"] },

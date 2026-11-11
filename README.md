@@ -97,7 +97,7 @@ node pipeline/correr.js --seco --horas=6 --salida=/tmp/prueba   # noticias reale
 
 ## Limitaciones
 
-- Las empresas argentinas tienen poca cobertura en GDELT: en una prueba de 6 horas, Nvidia salió en 582 artículos y YPF, Galicia y Vista en ninguno.
+- Las empresas argentinas tienen poca cobertura en GDELT: en 24 horas de noticias, Nvidia salió en 2.710 artículos, MercadoLibre en 5 e YPF y Vista en ninguno. Galicia aparece con su nombre traducido ("bank galicia"), por eso tiene alias en inglés.
 - Claude clasifica por el título, sin leer la nota.
 - La Atención necesita 5 días de historia; la calibración, cientos de propuestas.
 - Los horizontes se superponen y los activos se mueven juntos: los intervalos calculados son optimistas.

@@ -12,6 +12,11 @@ const ULTIMO = { en: "lastupdate.txt", traduccion: "lastupdate-translation.txt" 
 const C = { fecha: 1, medio: 3, url: 4, orgs: 13, orgsDetalle: 14, tono: 15, traduccion: 25, extras: 26 };
 const QUINCE_MIN = 15 * 60 * 1000;
 
+// V8 guarda los pedazos de un texto como referencias al texto entero: un título de
+// 80 caracteres podía retener el archivo de 50 MB del que salió. Lo que se guarda
+// más allá de un archivo se copia.
+const copia = (x) => (x ? Buffer.from(x, "utf8").toString("utf8") : x);
+
 const marca = (d) => d.toISOString().replace(/[-:T]/g, "").slice(0, 14);
 const deMarca = (m) => new Date(`${m.slice(0, 4)}-${m.slice(4, 6)}-${m.slice(6, 8)}T${m.slice(8, 10)}:${m.slice(10, 12)}:${m.slice(12, 14)}Z`);
 
@@ -69,16 +74,16 @@ export function acumular(estado, texto, activos) {
       if (!r.orgs.some((o) => coincide(o, a.alias))) continue;
       const e = estado.activos[a.ticker];
       if (e.urls.has(r.url)) continue;
-      e.urls.add(r.url);
+      e.urls.add(copia(r.url));
       e.conteo++;
       if (!r.titulo || !/^https?:\/\//.test(r.url)) continue;
       const tituloMin = r.titulo.toLowerCase();
       e.candidatos.push({
-        titulo: r.titulo.slice(0, 300),
-        url: r.url,
-        medio: r.medio,
+        titulo: copia(r.titulo.slice(0, 300)),
+        url: copia(r.url),
+        medio: copia(r.medio),
         fecha: r.fecha,
-        idioma: r.idioma,
+        idioma: copia(r.idioma),
         tonoGdelt: isFinite(r.tonoGdelt) ? Math.round(r.tonoGdelt * 100) / 100 : null,
         menciones: r.orgsDetalle.filter((o) => coincide(o, a.alias)).length,
         enTitulo: a.alias.some((x) => tituloMin.includes(x)) || tituloMin.includes(a.nombre.toLowerCase()),
@@ -139,7 +144,7 @@ export async function ultimaDisponible(flujo, buscar = fetch, intentos = 12) {
 }
 
 // Baja y procesa las 24 horas que terminan en el último archivo publicado.
-export async function bajarVentana({ activos, flujos = ["en", "traduccion"], horas = 24, n = 20, concurrencia = 6, buscar = fetch, registrar = () => {} }) {
+export async function bajarVentana({ activos, flujos = ["en", "traduccion"], horas = 24, n = 20, concurrencia = 4, buscar = fetch, registrar = () => {} }) {
   const estado = { total: 0, activos: Object.fromEntries(activos.map((a) => [a.ticker, { conteo: 0, urls: new Set(), candidatos: [] }])) };
   const archivos = { pedidos: 0, leidos: 0, faltantes: [] };
   const ventana = {};
@@ -178,6 +183,7 @@ export async function bajarVentana({ activos, flujos = ["en", "traduccion"], hor
     }
   }
   await Promise.all(Array.from({ length: concurrencia }, trabajador));
+  registrar(`GDELT: ${archivos.leidos} archivos leídos, ${estado.total} artículos; memoria en uso ${Math.round(process.memoryUsage().rss / 1e6)} MB`);
   const porActivo = {};
   for (const a of activos) {
     const e = estado.activos[a.ticker];
