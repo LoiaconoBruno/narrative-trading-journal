@@ -1,7 +1,7 @@
 {
   "name": "narrative-trading-journal",
-  "version": "0.1.0",
-  "description": "Bitácora de paper trading con tesis narrativa y validación humana, calibración y control de anticipación.",
+  "version": "0.2.0",
+  "description": "Una IA lee noticias reales de GDELT, actualiza índices narrativos y propone compras o ventas; cada tesis queda sellada por commit y la bitácora mide aciertos, calibración y el valor del humano. Plata simulada.",
   "private": true,
   "license": "MIT",
   "scripts": {
