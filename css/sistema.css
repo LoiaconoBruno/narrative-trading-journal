@@ -1,10 +1,13 @@
-/* Sistema de diseño común del portafolio · v1.1
+/* Sistema de diseño común del portafolio · v1.2
    Lo comparten todos los proyectos con interfaz nueva (no loiaAcademy, que tiene identidad propia).
    Fuente canónica: qr-business-card/css/sistema.css. Documentación: docs/sistema-de-diseno.md.
 
    Contrastes medidos (WCAG 2.1), en claro y en oscuro, sobre fondo, superficie y superficie-2:
    texto ≥ 13:1 · texto suave ≥ 6,5:1 · acento ≥ 5,7:1 · ok, aviso y error ≥ 5,2:1;
-   bordes de controles ≥ 3,2:1 (el mínimo para componentes es 3:1). Todo pasa AA. */
+   bordes de controles ≥ 3,2:1 (el mínimo para componentes es 3:1). Todo pasa AA.
+   v1.2: blanco sobre el degradado de la portada ≥ 6,2:1 (claro) y ≥ 8,9:1 (oscuro);
+   bajada (#e6e9ff) ≥ 5,1:1; texto de los pasos, blanco sobre su tarjeta translúcida ≥ 5,0:1;
+   ok, aviso, error y acento sobre su fondo suave ≥ 5,3:1; acento 2 ≥ 4,7:1. */
 
 :root {
   /* Tipografía: la del sistema, sin descargas. */
@@ -37,7 +40,7 @@
   --r-pildora: 999px;
 
   /* Paleta clara. */
-  --fondo: #f5f6f8;
+  --fondo: #f3f4fb;
   --superficie: #ffffff;
   --superficie-2: #eceff3;
   --texto: #151820;
@@ -51,6 +54,14 @@
   --ok: #14704a;
   --aviso: #8f5600;
   --error: #b42318;
+  --acento-2: #c2410c;
+  --ok-suave: #e3f4ea;
+  --aviso-suave: #fbf0dc;
+  --error-suave: #fce8e6;
+  --degradado-1: #3443c9;
+  --degradado: linear-gradient(135deg, #3443c9 0%, #6b2fd1 55%, #b4236a 100%);
+  --sobre-degradado: #ffffff;
+  --sobre-degradado-suave: #e6e9ff;
   --sombra-1: 0 1px 2px rgba(16, 20, 30, 0.06), 0 1px 1px rgba(16, 20, 30, 0.04);
   --sombra-2: 0 2px 4px rgba(16, 20, 30, 0.05), 0 12px 32px rgba(16, 20, 30, 0.10);
   --foco: 0 0 0 3px var(--fondo), 0 0 0 5px var(--acento);
@@ -73,6 +84,12 @@
     --ok: #4cc48a;
     --aviso: #f0b35a;
     --error: #ff8b80;
+    --acento-2: #ff9e6b;
+    --ok-suave: #17302a;
+    --aviso-suave: #33291a;
+    --error-suave: #3a1f1f;
+    --degradado-1: #2a338f;
+    --degradado: linear-gradient(135deg, #2a338f 0%, #4d2399 55%, #8a1b52 100%);
     --sombra-1: 0 1px 2px rgba(0, 0, 0, 0.4);
     --sombra-2: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.45);
     color-scheme: dark;
@@ -99,6 +116,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: clip; /* la portada ocupa todo el ancho sin generar barra horizontal */
   background: var(--fondo);
   color: var(--texto);
   font: var(--t-3) / 1.55 var(--fuente);
@@ -294,7 +312,7 @@ code, kbd {
 
 .campo__ayuda {
   margin: 0;
-  font-size: var(--t-1);
+  font-size: var(--t-2);
   color: var(--texto-suave);
 }
 
@@ -501,27 +519,33 @@ main:focus {
   margin: 0 0 var(--e-1);
 }
 
-/* Pestañas: role="tablist" con botones role="tab" y aria-selected. */
+/* Pestañas: role="tablist" con botones role="tab" y aria-selected.
+   v1.2: control segmentado (la pestaña elegida es una pastilla blanca). */
 
 .pestanas {
   display: flex;
   gap: var(--e-1);
+  width: fit-content;
+  max-width: 100%;
   overflow-x: auto;
-  border-bottom: 1px solid var(--borde);
-  margin-bottom: var(--e-4);
+  margin-bottom: var(--e-5);
+  padding: var(--e-1);
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-pildora);
   scrollbar-width: thin;
 }
 
 .pestanas [role="tab"] {
   flex: none;
-  min-height: 44px;
-  padding: 0 var(--e-3);
+  min-height: 40px;
+  padding: 0 var(--e-4);
   border: 0;
-  border-bottom: 3px solid transparent;
+  border-radius: var(--r-pildora);
   background: none;
   color: var(--texto-suave);
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--t-2);
   cursor: pointer;
 }
@@ -531,6 +555,288 @@ main:focus {
 }
 
 .pestanas [role="tab"][aria-selected="true"] {
+  background: var(--superficie);
   color: var(--acento);
-  border-bottom-color: var(--acento);
+  box-shadow: var(--sombra-1);
+}
+
+/* ---- v1.2: portada, «cómo funciona», datos, estados y ayudas ---------------- */
+
+/* Portada: la banda de color de arriba de cada app. Va dentro de .contenedor y se
+   estira de borde a borde de la ventana; el contenido queda alineado con el resto. */
+
+.portada {
+  position: relative;
+  margin-inline: calc(50% - 50vw);
+  padding: var(--e-7) calc(50vw - 50%) var(--e-6);
+  margin-bottom: var(--e-6);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.16), transparent 38%),
+    radial-gradient(circle at 8% 100%, rgba(255, 255, 255, 0.10), transparent 32%),
+    var(--degradado);
+  color: var(--sobre-degradado);
+}
+
+.portada h1 {
+  max-width: 22ch;
+  margin-bottom: var(--e-3);
+  color: var(--sobre-degradado);
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  letter-spacing: -0.03em;
+}
+
+.portada__bajada {
+  max-width: 46rem;
+  margin: 0;
+  color: var(--sobre-degradado-suave);
+  font-size: var(--t-4);
+}
+
+.portada a:not(.btn) {
+  color: var(--sobre-degradado);
+}
+
+.portada :focus-visible {
+  outline-color: var(--sobre-degradado);
+}
+
+.portada__etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  margin-bottom: var(--e-3);
+  padding: 2px var(--e-3);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--r-pildora);
+  font-size: var(--t-2);
+  font-weight: 700;
+}
+
+.portada__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3);
+  margin-top: var(--e-5);
+}
+
+.btn--blanco {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--degradado-1);
+}
+
+.btn--blanco:hover {
+  background: #eef0ff;
+  border-color: #eef0ff;
+  color: var(--degradado-1);
+}
+
+.btn--claro {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.75);
+  color: #ffffff;
+}
+
+.btn--claro:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+/* Cómo funciona: tres pasos numerados. Dentro de la portada se ven translúcidos. */
+
+.como-funciona {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: var(--e-3);
+  margin: var(--e-6) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso-guia;
+}
+
+.como-funciona li {
+  counter-increment: paso-guia;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--e-3);
+  align-content: start;
+  min-width: 0;
+  padding: var(--e-4);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--r-3);
+}
+
+.como-funciona li::before {
+  content: counter(paso-guia);
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--acento);
+  color: var(--acento-texto);
+  font-weight: 800;
+}
+
+.como-funciona strong {
+  font-size: var(--t-4);
+  line-height: 1.3;
+}
+
+.como-funciona span {
+  color: var(--texto-suave);
+  font-size: var(--t-2);
+}
+
+.portada .como-funciona li {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.portada .como-funciona li::before {
+  background: #ffffff;
+  color: var(--degradado-1);
+}
+
+.portada .como-funciona span {
+  color: var(--sobre-degradado); /* sobre la tarjeta translúcida, el suave no llega a 4,5:1 */
+}
+
+/* Datos: un número grande con su explicación. La franja de arriba dice el estado. */
+
+.datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: var(--e-3);
+  margin: 0 0 var(--e-5);
+  padding: 0;
+  list-style: none;
+}
+
+.dato {
+  display: grid;
+  align-content: start;
+  gap: var(--e-1);
+  min-width: 0;
+  padding: var(--e-4);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--acento);
+  border-radius: var(--r-3);
+  box-shadow: var(--sombra-1);
+}
+
+.dato--ok { border-top-color: var(--ok); }
+.dato--aviso { border-top-color: var(--aviso); }
+.dato--error { border-top-color: var(--error); }
+.dato--neutro { border-top-color: var(--borde-control); }
+
+.dato__titulo {
+  color: var(--texto-suave);
+  font-size: var(--t-2);
+  font-weight: 700;
+}
+
+.dato__valor {
+  font-size: var(--t-6);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dato__nota {
+  color: var(--texto-suave);
+  font-size: var(--t-2);
+}
+
+/* Estado: etiqueta con color, ícono y texto (nunca solo color). */
+
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-1);
+  min-height: 26px;
+  padding: 2px var(--e-3);
+  border-radius: var(--r-pildora);
+  font-size: var(--t-2);
+  font-weight: 700;
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+
+.estado--ok { background: var(--ok-suave); color: var(--ok); }
+.estado--aviso { background: var(--aviso-suave); color: var(--aviso); }
+.estado--error { background: var(--error-suave); color: var(--error); }
+
+/* Explica: una ayuda que se abre con «¿Qué es esto?», para la jerga. */
+
+.explica {
+  margin: var(--e-1) 0 0;
+  font-size: var(--t-2);
+}
+
+.explica > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 32px;
+  color: var(--acento);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.explica > summary::-webkit-details-marker {
+  display: none;
+}
+
+.explica > summary::before {
+  content: "?";
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--acento-suave);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.explica[open] > summary::before {
+  content: "−";
+}
+
+.explica > :not(summary) {
+  margin: var(--e-2) 0 0;
+  padding: var(--e-3) var(--e-4);
+  background: var(--acento-suave);
+  border-radius: var(--r-2);
+  color: var(--texto);
+}
+
+/* Título de panel con ícono en un círculo de color. */
+
+.titulo-icono {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+}
+
+.titulo-icono__icono {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-2);
+  background: var(--acento-suave);
+  color: var(--acento);
+}
+
+.titulo-icono__icono svg {
+  width: 22px;
+  height: 22px;
 }

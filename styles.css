@@ -19,30 +19,32 @@ details.aviso ul { margin: var(--e-2) 0 0; padding-left: var(--e-5); }
 .encabezado--panel { margin-top: 0; }
 .acciones { display: flex; flex-wrap: wrap; gap: var(--e-2); }
 
-/* Tablero */
-.tablero { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--e-3); margin: 0 0 var(--e-5); padding: 0; list-style: none; }
-.tile { display: grid; gap: var(--e-1); align-content: start; min-width: 0; padding: var(--e-4); background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--r-3); box-shadow: var(--sombra-1); }
-.tile__titulo { color: var(--texto-suave); font-size: var(--t-2); font-weight: 600; }
-.tile__valor { font-size: var(--t-6); font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.tile__sub { color: var(--texto-suave); font-size: var(--t-1); }
+/* Resumen del experimento */
+.resumen { margin: var(--e-6) 0 var(--e-6); }
+.resumen__titulo { font-size: var(--t-5); }
+.resumen .dato .estado { justify-self: start; }
+.explica--bloque { margin: 0 0 var(--e-4); }
 
 [role="tabpanel"]:focus-visible { outline: 3px solid var(--acento); outline-offset: 4px; border-radius: var(--r-1); }
 
 /* Propuestas */
 .propuestas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: var(--e-4); margin: 0; padding: 0; list-style: none; }
-.propuesta { display: flex; flex-direction: column; gap: var(--e-3); min-width: 0; padding: var(--e-4); }
+.propuesta { display: flex; flex-direction: column; gap: var(--e-3); min-width: 0; padding: var(--e-4); border-top: 4px solid var(--acento); }
+.propuesta:has(.dir--compra) { border-top-color: var(--ok); }
+.propuesta:has(.dir--venta) { border-top-color: var(--error); }
 .propuesta__cabeza { display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "puesto activo conf" "puesto dir conf"; align-items: center; gap: var(--e-1) var(--e-3); }
-.propuesta__puesto { grid-area: puesto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--superficie-2); color: var(--texto-suave); font-weight: 700; font-size: var(--t-2); }
+.propuesta__puesto { grid-area: puesto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--acento-suave); color: var(--acento); font-weight: 800; font-size: var(--t-2); }
 .propuesta__activo { grid-area: activo; min-width: 0; }
 .propuesta__activo h3 { margin: 0; font-size: var(--t-5); }
 .propuesta__activo h3 span { color: var(--texto-suave); font-size: var(--t-3); font-weight: 600; }
-.dir { grid-area: dir; justify-self: start; display: inline-flex; align-items: center; min-height: 26px; padding: 0 var(--e-3); border-radius: var(--r-pildora); font-size: var(--t-2); font-weight: 700; border: 1px solid currentColor; }
-.dir--compra { color: var(--ok); }
-.dir--venta { color: var(--error); }
+.dir { grid-area: dir; justify-self: start; display: inline-flex; align-items: center; min-height: 30px; padding: 0 var(--e-3); border-radius: var(--r-pildora); font-size: var(--t-3); font-weight: 800; letter-spacing: 0.01em; }
+.dir--compra { color: var(--ok); background: var(--ok-suave); }
+.dir--venta { color: var(--error); background: var(--error-suave); }
+.propuesta__frase { margin: 0; font-size: var(--t-2); color: var(--texto-suave); }
 .propuesta__conf { grid-area: conf; display: grid; justify-items: end; line-height: 1.1; }
 .propuesta__conf strong { font-size: var(--t-6); font-variant-numeric: tabular-nums; }
 .propuesta__conf span { color: var(--texto-suave); font-size: var(--t-1); }
-.barra { height: 6px; border-radius: var(--r-pildora); background: var(--superficie-2); overflow: hidden; }
+.barra { height: 8px; border-radius: var(--r-pildora); background: var(--superficie-2); overflow: hidden; }
 .barra span { display: block; height: 100%; min-width: 4px; border-radius: var(--r-pildora); background: var(--acento); }
 .propuesta__tesis { margin: 0; font-size: var(--t-3); }
 .propuesta__datos { display: grid; gap: var(--e-3); margin: 0; font-size: var(--t-2); }

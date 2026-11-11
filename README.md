@@ -11,7 +11,7 @@
 ![Página: 0 dependencias](https://img.shields.io/badge/p%C3%A1gina-0%20dependencias-brightgreen)
 [![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue)](LICENSE)
 
-<img src="docs/captura.png" alt="Captura de Narrative Trading Journal: tablero, propuestas del día ordenadas por confianza y botones para aprobar o rechazar" width="800">
+<img src="docs/captura.png" alt="Captura de Narrative Trading Journal: portada con los tres pasos, datos del experimento y propuestas del día ordenadas por confianza" width="800">
 
 </div>
 
@@ -61,11 +61,11 @@ GDELT, Twelve Data (plan Basic), GitHub Actions en un repo público y GitHub Pag
 
 Abrí la [página](https://loiaconobruno.github.io/narrative-trading-journal/). Hasta que el pipeline junte datos, mirá el [ejemplo con datos inventados](https://loiaconobruno.github.io/narrative-trading-journal/?ejemplo):
 
-1. **Hoy:** cinco propuestas ficticias del 15 de octubre de 2026, ordenadas por confianza (DLTA compra 72 %, GAMA compra 68 %, BETA venta 63 %…). El reloj del ejemplo marca las 9:40 de Buenos Aires, antes de la apertura: apretá **Aprobar** en DLTA y la tarjeta dice "Aprobaste a las 09:40 · cuenta".
-2. **El tablero:** 180 propuestas cerradas, **61 %** de aciertos (intervalo de 53 % a 67 %), **Brier 0,234** (al azar: 0,250), valor agregado **+0,16 pp** y **1 de 4** criterios del umbral.
-3. **Índices:** la historia de cada activo y, rueda por rueda, los títulos que movieron el Tono (▲ ▼) y el Riesgo (⚠).
-4. **Bitácora:** el gráfico de calibración (en el tramo de 60–70 %, el más poblado, dijo 64 % y acertó 58 %: el ejemplo está armado para acertar 3 puntos menos de lo que dice), los criterios del umbral, tu valor como humano y la tabla de cerradas. Ahí se exportan e importan tus decisiones.
-5. **Método:** qué mide cada índice, cómo se sella, las fuentes y los costos.
+1. **Propuestas de hoy:** cinco propuestas ficticias del 15 de octubre de 2026, ordenadas por confianza (DLTA compra 72 %, GAMA compra 68 %, BETA venta 63 %…). El reloj del ejemplo marca las 9:40 de Buenos Aires, antes de la apertura: apretá **Aprobar** en DLTA y la tarjeta dice "Aprobaste a las 09:40 · cuenta".
+2. **Cómo viene el experimento:** 180 propuestas medidas, **61 %** de aciertos (intervalo de 53 % a 67 %, "Mejor que una moneda"), **Brier 0,234** ("Apenas mejor que una moneda"; al azar: 0,250), tu filtro **+0,16 pp** y **1 de 4** condiciones para pensar en plata real.
+3. **Noticias e índices:** la historia de cada activo y, rueda por rueda, los títulos que movieron el Tono (▲ ▼) y el Riesgo (⚠).
+4. **Resultados:** el gráfico de calibración (en el tramo de 60–70 %, el más poblado, dijo 64 % y acertó 58 %: el ejemplo está armado para acertar 3 puntos menos de lo que dice), los criterios del umbral, tu valor como humano y la tabla de cerradas. Ahí se exportan e importan tus decisiones.
+5. **Cómo funciona:** qué mide cada índice, cómo se sella, las fuentes y los costos.
 
 ## Cómo funciona
 

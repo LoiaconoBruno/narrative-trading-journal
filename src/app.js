@@ -92,7 +92,7 @@
     } else if (D.ejemplo) {
       partes.push(`<p class="aviso"><strong>Datos inventados.</strong> Cinco activos ficticios y resultados simulados, para ver cómo funciona antes de que el pipeline junte datos reales. Tus clics no se guardan. <a href="./">Ver los datos reales</a>.</p>`);
     } else if (!D.dias.length) {
-      partes.push(`<p class="aviso"><strong>Todavía no hay propuestas.</strong> El pipeline diario no generó ninguna todavía (ver «Método» y la guía para activarlo). Mientras tanto, <a href="?ejemplo">mirá el ejemplo</a>.</p>`);
+      partes.push(`<p class="aviso"><strong>Todavía no hay propuestas.</strong> El pipeline diario no generó ninguna todavía (ver «Cómo funciona» y la guía para activarlo). Mientras tanto, <a href="?ejemplo">mirá el ejemplo</a>.</p>`);
     }
     if (D && D.sellos && D.sellos.problemas && D.sellos.problemas.length) {
       partes.push(`<p class="aviso aviso--error"><strong>La cadena de sellos está rota.</strong> ${D.sellos.problemas.map((p) => `${esc(p.nombre)}: ${esc(p.problema)}`).join(" · ")}</p>`);
@@ -104,16 +104,23 @@
     $("avisos").innerHTML = partes.join("");
   }
 
+  // Cada dato dice su estado con color, ícono y palabras. Las referencias no son
+  // inventadas: 50 % es tirar una moneda, 0,25 es el Brier de decir siempre 50 %,
+  // 0 es que tu filtro no cambió nada.
   function tablero(r, u) {
     const h = r.humano;
+    const estado = (tipo, texto) => `<span class="estado estado--${tipo}">${{ ok: "✓", aviso: "!", error: "✕", neutro: "·" }[tipo]} ${texto}</span>`;
+    const aciertos = r.wilson === null ? ["neutro", "Todavía sin datos"] : r.wilson.inferior > 0.5 ? ["ok", "Mejor que una moneda"] : ["neutro", "Todavía no se distingue del azar"];
+    const confianza = r.brier === null ? ["neutro", "Todavía sin datos"] : r.brier <= Bitacora.UMBRAL.brierMax ? ["ok", "Mejor que una moneda"] : r.brier < r.brierAzar ? ["aviso", "Apenas mejor que una moneda"] : ["error", "No mejor que una moneda"];
+    const filtro = h.valor === null ? ["neutro", "Todavía sin decisiones"] : h.valor > 0 ? ["ok", "Sí, por ahora suma"] : h.valor < 0 ? ["error", "Por ahora resta"] : ["neutro", "Ni suma ni resta"];
     const tiles = [
-      ["Propuestas cerradas", num(r.cerradas), `${num(r.abiertas)} abiertas${r.excluidas ? ` · ${num(r.excluidas)} no cuentan` : ""}`],
-      ["Aciertos", pct(r.tasa), r.wilson ? `entre ${pct(r.wilson.inferior)} y ${pct(r.wilson.superior)} (95${NB}%)` : "sin datos todavía"],
-      ["Brier del sistema", brier(r.brier), `al azar: ${brier(r.brierAzar)}; menos es mejor`],
-      ["Tu valor agregado", h.valor === null ? "—" : `${conSigno(h.valor * 100, 2)}${NB}pp`, h.decididas ? `${num(h.decididas)} decisiones a tiempo` : "aprobá o rechazá en «Hoy»"],
-      ["Umbral para plata real", `${u.cumplidos} de 4`, u.cumple ? "se cumplen los criterios" : "criterios cumplidos"],
+      ["neutro", "Propuestas medidas", num(r.cerradas), `${num(r.abiertas)} esperando resultado${r.excluidas ? ` · ${num(r.excluidas)} no cuentan` : ""}`, ""],
+      [aciertos[0], "Aciertos de la IA", pct(r.tasa), r.wilson ? `Entre ${pct(r.wilson.inferior)} y ${pct(r.wilson.superior)}, con 95${NB}% de confianza` : "Se mide cinco ruedas después de cada propuesta", estado(...aciertos)],
+      [confianza[0], "¿Su confianza es creíble?", brier(r.brier), `Brier: 0 es perfecto, ${brier(r.brierAzar)} es tirar una moneda`, estado(...confianza)],
+      [filtro[0], "¿Tu filtro suma?", h.valor === null ? "—" : `${conSigno(h.valor * 100, 2)}${NB}pp`, h.decididas ? `Sobre ${num(h.decididas)} decisiones tomadas a tiempo` : "Aprobá o rechazá en «Propuestas de hoy»", estado(...filtro)],
+      [u.cumple ? "ok" : "neutro", "¿Pensar en plata real?", `${u.cumplidos} de 4`, "Condiciones cumplidas", estado(...(u.cumple ? ["ok", "Se cumplen las cuatro"] : ["neutro", "Todavía no"]))],
     ];
-    $("tablero").innerHTML = tiles.map(([t, v, s]) => `<li class="tile"><span class="tile__titulo">${t}</span><span class="tile__valor">${v}</span><span class="tile__sub">${s}</span></li>`).join("");
+    $("tablero").innerHTML = tiles.map(([tipo, t, v, nota, est]) => `<li class="dato dato--${tipo}"><span class="dato__titulo">${t}</span><span class="dato__valor">${v}</span>${est}<span class="dato__nota">${nota}</span></li>`).join("");
   }
 
   // ---- Hoy -----------------------------------------------------------------------
@@ -150,6 +157,7 @@
         <div class="propuesta__conf"><strong>${p.confianza}${NB}%</strong><span>confianza</span></div>
       </div>
       <div class="barra" role="img" aria-label="Confianza ${p.confianza} %, en una escala de 50 a 100"><span style="width:${((p.confianza - 50) / 50) * 100}%"></span></div>
+      <p class="propuesta__frase">La IA cree que <strong>${p.direccion === "compra" ? "va a subir" : "va a bajar"}</strong> de la apertura de hoy al cierre de la quinta rueda.</p>
       <p class="propuesta__tesis">${esc(p.tesis)}</p>
       <dl class="propuesta__datos">
         <div><dt>Episodio parecido</dt><dd><strong>${esc(p.analogo.episodio)}</strong>${p.analogo.periodo && p.analogo.periodo !== "—" ? ` (${esc(p.analogo.periodo)})` : ""}. ${esc(p.analogo.parecido)}${fuente}</dd></div>
@@ -269,7 +277,7 @@
     const h = rs.humano;
     $("humano").innerHTML = h.decididas
       ? `Decidiste a tiempo sobre ${num(h.decididas)} propuestas cerradas (aprobaste ${num(h.aprobadas)}). Lo que aprobaste rindió en promedio ${pctSigno(h.promAprobadas, 2)}; todo lo que decidiste, ${pctSigno(h.promDecididas, 2)}. Diferencia: <strong>${conSigno(h.valor * 100, 2)}${NB}pp</strong>${h.valor > 0 ? ": tu filtro sumó." : h.valor < 0 ? ": tu filtro restó." : "."} Tu decisión coincidió con el resultado el ${pct(h.coincidencias)} de las veces.${h.tarde ? ` ${num(h.tarde)} decisiones llegaron después de la apertura y no cuentan.` : ""}`
-      : "Todavía no hay decisiones tuyas sobre propuestas cerradas. Aprobá o rechazá en «Hoy» antes de la apertura.";
+      : "Todavía no hay decisiones tuyas sobre propuestas cerradas. Aprobá o rechazá en «Propuestas de hoy» antes de la apertura.";
     const cerradas = lista.filter((p) => p.resultado).sort((a, b) => b.fecha.localeCompare(a.fecha) || b.confianza - a.confianza);
     $("cerradas-meta").textContent = cerradas.length ? `${num(cerradas.length)} cerradas. El rendimiento es el del activo desde la apertura de la rueda hasta el cierre de la quinta, visto desde la propuesta (positivo si acertó la dirección).` : "Todavía no cerró ninguna propuesta: el horizonte es de 5 ruedas.";
     const decision = (p) => !p.decision ? '<span class="medio">—</span>' : `${p.decision.decision === "aprobada" ? "Aprobada" : "Rechazada"}${p.decisionCuenta ? "" : ' <span class="medio">(tarde)</span>'}`;
@@ -367,6 +375,15 @@
     }
   });
   $("activo").addEventListener("change", (e) => historia(e.target.value));
+  $("ir-hoy").addEventListener("click", () => {
+    elegir("hoy");
+    $("tab-hoy").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("tab-hoy").focus({ preventScroll: true });
+  });
+  if (EJEMPLO) {
+    $("ir-ejemplo").textContent = "Ver los datos reales";
+    $("ir-ejemplo").href = "./";
+  }
   $("ver-mas").addEventListener("click", () => { mostradas += POR_PAGINA; pintar(); });
   $("exportar").addEventListener("click", () => bajar(`decisiones-${new Date().toISOString().slice(0, 10)}.json`, { formato: "narrative-trading-journal/decisiones@1", exportadoEn: new Date().toISOString(), decisiones: D.decisiones }));
   $("importar").addEventListener("change", async (e) => {

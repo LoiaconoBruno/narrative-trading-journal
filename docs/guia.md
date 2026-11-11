@@ -87,7 +87,7 @@ Las fallas no tiran abajo la corrida: si falta un archivo de GDELT, se sigue con
 
 ### 5. Los índices
 
-Cada índice tiene una definición escrita en `src/indices.js`, la misma que muestra la página en «Método».
+Cada índice tiene una definición escrita en `src/indices.js`, la misma que muestra la página en «Cómo funciona».
 
 | Índice | Escala | Qué mide |
 |---|---|---|
@@ -118,7 +118,7 @@ $$ Momento(hoy) = 0,3 · Tono(hoy) + 0,7 · Momento(ayer)
 
 El primer día es igual al Tono. Si un día no hay Tono, el Momento se mantiene.
 
-**Las noticias que lo movieron.** En la pestaña Índices, cada rueda se despliega y muestra, con link a cada artículo: el conteo y la base de la Atención con los artículos más relevantes, los artículos positivos (▲) y negativos (▼) que movieron el Tono y el Momento, y los marcados como riesgo (⚠). El número entre paréntesis al lado de cada índice es el cambio contra la rueda anterior.
+**Las noticias que lo movieron.** En la pestaña «Noticias e índices», cada rueda se despliega y muestra, con link a cada artículo: el conteo y la base de la Atención con los artículos más relevantes, los artículos positivos (▲) y negativos (▼) que movieron el Tono y el Momento, y los marcados como riesgo (⚠). El número entre paréntesis al lado de cada índice es el cambio contra la rueda anterior.
 
 Los índices llevan a la práctica tres maneras de medir narrativas que la segunda parte describe: contar artículos, como el índice de incertidumbre de Baker, Bloom y Davis; leer el tono de los textos, como Paul Tetlock con las columnas del *Wall Street Journal*; y seguir la evolución en el tiempo, como Shiller con las curvas de contagio de una narrativa (sección 27).
 
@@ -134,9 +134,9 @@ Una predicción solo vale si se escribió antes de conocer el resultado. El sist
 
 Dos advertencias honestas. La hora de un commit la puede falsear quien tenga permiso de escritura en el repositorio; los registros de cada corrida de GitHub Actions, que guarda GitHub, son el testigo externo. Y tus decisiones, que viven en tu navegador, tienen la hora de tu reloj, no la de un commit.
 
-### 7. La pantalla «Hoy» y tus decisiones
+### 7. La pantalla «Propuestas de hoy» y tus decisiones
 
-Arriba, un tablero resume el sistema: propuestas cerradas, tasa de aciertos con su intervalo, Brier, tu valor agregado y cuántos criterios del umbral se cumplen. Debajo, las propuestas del día, **ordenadas por confianza** de mayor a menor. Cada tarjeta muestra:
+Arriba, una portada explica el experimento en tres pasos (la IA lee y propone, vos aprobás o rechazás, cinco ruedas después se mide). Debajo, «Cómo viene el experimento» resume el sistema en cinco datos, cada uno con una etiqueta que dice en palabras si está bien o mal: propuestas medidas, aciertos de la IA con su intervalo (comparados con tirar una moneda), si su confianza es creíble (el Brier, comparado con el 0,25 de decir siempre 50 %), si tu filtro suma y cuántas condiciones para pensar en plata real se cumplen. Después vienen las propuestas del día, **ordenadas por confianza** de mayor a menor. Cada tarjeta muestra:
 
 - el activo, la dirección (▲ compra o ▼ venta) y la confianza, con una barra de 50 a 100;
 - la tesis;
@@ -147,7 +147,7 @@ Arriba, un tablero resume el sistema: propuestas cerradas, tasa de aciertos con 
 - el historial de ese activo (aciertos sobre cerradas) y el Brier del sistema;
 - los botones **Aprobar** y **Rechazar**, activos hasta la apertura.
 
-Tocar de nuevo el botón elegido deshace la decisión. Las decisiones quedan en tu navegador con su hora; desde la pestaña Bitácora se pueden exportar a un JSON e importar en otro navegador. Una decisión tomada después de la apertura (por ejemplo, importada de un archivo con otra hora) se muestra como "tarde" y no cuenta.
+Tocar de nuevo el botón elegido deshace la decisión. Las decisiones quedan en tu navegador con su hora; desde la pestaña «Resultados» se pueden exportar a un JSON e importar en otro navegador. Una decisión tomada después de la apertura (por ejemplo, importada de un archivo con otra hora) se muestra como "tarde" y no cuenta.
 
 ### 8. Las métricas
 
@@ -193,7 +193,7 @@ Es una vara propia, no una regla del mercado, y es una condición necesaria, no 
 | Claude Sonnet 5.5 | US$ 2 / US$ 10 | US$ 0,13 a 0,33 | US$ 2,79 a 6,87 |
 | Claude Haiku 5.5 | US$ 0,10 / US$ 0,50 | US$ 0,007 a 0,016 | US$ 0,14 a 0,34 |
 
-Es una estimación, no una medición. La medición empieza con la primera corrida: el pipeline guarda en `data/costos.json` los tokens que informa la API en cada llamada y su costo, y la página muestra el total del mes en «Método». Si el costo real se va del rango, se puede bajar el esfuerzo en `data/config.json`, clasificar menos artículos o cambiar de modelo.
+Es una estimación, no una medición. La medición empieza con la primera corrida: el pipeline guarda en `data/costos.json` los tokens que informa la API en cada llamada y su costo, y la página muestra el total del mes en «Cómo funciona». Si el costo real se va del rango, se puede bajar el esfuerzo en `data/config.json`, clasificar menos artículos o cambiar de modelo.
 
 ### 11. Ejemplo resuelto
 
