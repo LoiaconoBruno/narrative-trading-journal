@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Narrative Trading · propuestas de una IA que lee noticias, medidas</title>
   <meta name="description" content="Cada día hábil, Claude lee noticias reales de GDELT, actualiza índices narrativos por activo y propone compra o venta a 5 ruedas. Cada tesis queda sellada por un commit antes del resultado y la bitácora mide aciertos, calibración y tu valor como humano. Plata simulada.">
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f6f8">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1015">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233a4bd6'/%3E%3Cpath d='M7 21l6-6 4 4 8-9' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/sistema.css?v=0.3.0">
-  <link rel="stylesheet" href="styles.css?v=0.3.0">
-  <script src="src/calendario.js?v=0.3.0" defer></script>
-  <script src="src/indices.js?v=0.3.0" defer></script>
-  <script src="src/bitacora.js?v=0.3.0" defer></script>
-  <script src="src/sellos.js?v=0.3.0" defer></script>
-  <script src="src/costos.js?v=0.3.0" defer></script>
-  <script src="src/ejemplo.js?v=0.3.0" defer></script>
-  <script src="src/graficos.js?v=0.3.0" defer></script>
-  <script src="src/app.js?v=0.3.0" defer></script>
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f5f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a1222">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e1a33'/%3E%3Cpath d='M7 21l6-6 4 4 8-9' fill='none' stroke='%23ffb547' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/sistema.css?v=0.4.0">
+  <link rel="stylesheet" href="styles.css?v=0.4.0">
+  <script src="src/calendario.js?v=0.4.0" defer></script>
+  <script src="src/indices.js?v=0.4.0" defer></script>
+  <script src="src/bitacora.js?v=0.4.0" defer></script>
+  <script src="src/sellos.js?v=0.4.0" defer></script>
+  <script src="src/costos.js?v=0.4.0" defer></script>
+  <script src="src/ejemplo.js?v=0.4.0" defer></script>
+  <script src="src/graficos.js?v=0.4.0" defer></script>
+  <script src="src/app.js?v=0.4.0" defer></script>
 </head>
 <body>
   <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -38,19 +39,29 @@
   <main id="contenido" tabindex="-1">
     <div class="contenedor">
       <div class="portada">
-        <span class="portada__etiqueta">Experimento con plata simulada</span>
-        <h1>Una IA lee las noticias y propone. Vos decidís. La bitácora mide.</h1>
-        <p class="portada__bajada">Cada día hábil, antes de que abra la Bolsa de Nueva York, Claude lee noticias reales sobre diez empresas y propone comprar o vender cada una. Con el tiempo se ve si acierta, si su confianza vale algo y si tu criterio mejora el resultado.</p>
-        <div class="portada__acciones">
-          <button type="button" class="btn btn--blanco btn--grande" id="ir-hoy">Ver las propuestas de hoy</button>
-          <a class="btn btn--claro btn--grande" id="ir-ejemplo" href="?ejemplo">Probar con datos de ejemplo</a>
+        <div class="portada__texto">
+          <h1>Una IA lee las noticias y propone. Vos decidís. La bitácora mide.</h1>
+          <p class="portada__bajada">Cada día hábil, antes de que abra la Bolsa de Nueva York, Claude lee las noticias de diez empresas y propone comprar o vender cada una. Con el tiempo se ve si acierta, si su confianza vale algo y si tu criterio mejora el resultado.</p>
+          <div class="portada__acciones">
+            <button type="button" class="btn btn--primario btn--grande" id="ir-hoy">Ver las propuestas de hoy</button>
+            <a class="btn btn--grande" id="ir-ejemplo" href="?ejemplo">Probar con datos de ejemplo</a>
+          </div>
         </div>
-        <ol class="como-funciona" aria-label="Cómo funciona">
-          <li><strong>La IA lee y propone</strong><span>Antes de la apertura, lee las noticias de las últimas 24 horas y propone comprar o vender cada acción, con cuánta confianza y por qué.</span></li>
-          <li><strong>Vos aprobás o rechazás</strong><span>Hasta que abre el mercado elegís cuáles seguirías. Tu decisión queda guardada en este navegador.</span></li>
-          <li><strong>Cinco ruedas después, se mide</strong><span>Se ve quién acertó: la IA, vos o ninguno. Las propuestas quedan selladas antes del resultado y no se pueden cambiar.</span></li>
-        </ol>
+        <figure class="portada__objeto pizarra" aria-labelledby="pizarra-titulo">
+          <figcaption class="pizarra__cabeza">
+            <span id="pizarra-titulo">Pizarra de la rueda</span>
+            <span class="pizarra__simulada">Plata simulada</span>
+          </figcaption>
+          <ol class="pizarra__filas" id="pizarra-filas"></ol>
+          <p class="pizarra__pie" id="pizarra-pie"></p>
+        </figure>
       </div>
+
+      <ol class="como-funciona" aria-label="Un día del experimento">
+        <li><strong>Antes de la apertura, la IA propone</strong><span>Lee las noticias de las últimas 24 horas y propone comprar o vender cada acción, con cuánta confianza y por qué.</span></li>
+        <li><strong>Hasta la apertura, vos decidís</strong><span>Aprobás o rechazás cada propuesta. Tu decisión queda guardada en este navegador.</span></li>
+        <li><strong>Cinco ruedas después, se mide</strong><span>Se ve quién acertó: la IA, vos o ninguno. Las propuestas quedan selladas antes del resultado.</span></li>
+      </ol>
 
       <p class="aviso aviso--aviso aviso-fijo" role="note"><strong>Plata simulada.</strong> Esto no es una recomendación de inversión: es un experimento para medir si las propuestas de una IA sirven.</p>
 

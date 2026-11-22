@@ -1,5 +1,103 @@
-/* Estilos propios de Narrative Trading. La base (colores, tipografía, botones, campos,
-   paneles, cabecera, pestañas) viene de css/sistema.css, el sistema de diseño común. */
+/* Narrative Trading: identidad propia sobre el sistema común (css/sistema.css v2.0).
+   Tipografía: Archivo, de Omnibus-Type (Buenos Aires), licencia OFL (fonts/OFL.txt).
+   Su eje de ancho da los tickers angostos de la pizarra y los titulares de diario.
+   Paleta: tinta azul noche y ámbar de tablero de bolsa; verde y rojo solo para subir y bajar.
+   Contrastes medidos (WCAG 2.1), mínimo sobre fondo y superficie:
+   claro: texto 16,3:1 · texto suave 7,0:1 · acento 11,5:1 · compra 5,4:1 · venta 6,0:1 · bordes 3,4:1
+   oscuro: texto 14,2:1 · texto suave 8,0:1 · acento (ámbar) 9,7:1 · compra 8,1:1 · venta 7,4:1
+   pizarra: texto 14,7:1 · ámbar 9,8:1 · compra 9,1:1 · venta 7,6:1 · borde 3,3:1 */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+
+:root {
+  --fuente: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --fuente-titulos: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --peso-titulos: 800;
+  --tracking-titulos: -0.015em;
+  --fondo: #f3f5f7;
+  --superficie: #ffffff;
+  --superficie-2: #e9edf2;
+  --texto: #10172a;
+  --texto-suave: #4a5468;
+  --borde: #d6dce5;
+  --borde-control: #7a8499;
+  --acento: #14306e;
+  --acento-hover: #0e2557;
+  --acento-texto: #ffffff;
+  --acento-suave: #e6ecf8;
+  --ok: #13734a;
+  --error: #b42318;
+  --pizarra: #0e1a33;
+  --pizarra-texto: #e8edf7;
+  --pizarra-suave: #a9b6cf;
+  --pizarra-borde: #62729a;
+  --ambar: #ffb547;
+  --sube: #46d488;
+  --baja: #ff8a80;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #0a1222;
+    --superficie: #111c33;
+    --superficie-2: #182542;
+    --texto: #e6ebf5;
+    --texto-suave: #a7b2c8;
+    --borde: #24314f;
+    --borde-control: #6b7894;
+    --acento: #ffb547;
+    --acento-hover: #ffc56e;
+    --acento-texto: #0a1222;
+    --acento-suave: #2e2614;
+    --ok: #46c98a;
+    --error: #ff8a80;
+    --pizarra: #0e1a33;
+  }
+}
+
+/* La pizarra: el objeto de la portada. Siempre oscura, como un tablero de bolsa. */
+.pizarra {
+  margin: 0;
+  padding: var(--e-5);
+  background: var(--pizarra);
+  color: var(--pizarra-texto);
+  border: 1px solid var(--pizarra-borde);
+  border-radius: 6px;
+  box-shadow: 0 24px 48px -24px rgba(14, 26, 51, 0.55);
+}
+.pizarra__cabeza { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--e-2) var(--e-4); padding-bottom: var(--e-3); border-bottom: 1px solid var(--pizarra-borde); color: var(--pizarra-suave); font-size: var(--t-2); font-weight: 600; }
+.pizarra__cabeza span:first-child { color: var(--pizarra-texto); font-weight: 700; }
+.pizarra__simulada { color: var(--ambar); }
+.pizarra__filas { margin: 0; padding: 0; list-style: none; }
+.pizarra__filas li {
+  display: grid;
+  grid-template-columns: minmax(4.5ch, 1fr) auto minmax(5ch, auto);
+  align-items: baseline;
+  gap: var(--e-4);
+  padding: var(--e-2) 0;
+  border-bottom: 1px solid rgba(98, 114, 154, 0.35);
+  font-variant-numeric: tabular-nums;
+  animation: fila-entra 420ms cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.pizarra__tk { color: var(--ambar); font-size: 1.6rem; font-weight: 750; font-stretch: 68%; letter-spacing: 0.02em; line-height: 1.1; }
+.pizarra__dir { font-size: var(--t-2); font-weight: 700; }
+.pizarra__dir--compra { color: var(--sube); }
+.pizarra__dir--venta { color: var(--baja); }
+.pizarra__dir--nada { color: var(--pizarra-suave); }
+.pizarra__conf { justify-self: end; font-size: 1.35rem; font-weight: 700; font-stretch: 80%; }
+.pizarra__pie { margin: var(--e-3) 0 0; color: var(--pizarra-suave); font-size: var(--t-2); }
+.pizarra :focus-visible { outline-color: var(--ambar); }
+@keyframes fila-entra {
+  from { opacity: 0; transform: translateY(-6px); clip-path: inset(0 0 100% 0); }
+  to { opacity: 1; transform: none; clip-path: inset(0); }
+}
 
 main { padding-bottom: var(--e-7); }
 
@@ -21,6 +119,7 @@ details.aviso ul { margin: var(--e-2) 0 0; padding-left: var(--e-5); }
 
 /* Resumen del experimento */
 .resumen { margin: var(--e-6) 0 var(--e-6); }
+.portada h1 { font-stretch: 78%; font-weight: 800; max-width: 15ch; }
 .resumen__titulo { font-size: var(--t-5); }
 .resumen .dato .estado { justify-self: start; }
 .explica--bloque { margin: 0 0 var(--e-4); }
@@ -35,8 +134,8 @@ details.aviso ul { margin: var(--e-2) 0 0; padding-left: var(--e-5); }
 .propuesta__cabeza { display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "puesto activo conf" "puesto dir conf"; align-items: center; gap: var(--e-1) var(--e-3); }
 .propuesta__puesto { grid-area: puesto; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--acento-suave); color: var(--acento); font-weight: 800; font-size: var(--t-2); }
 .propuesta__activo { grid-area: activo; min-width: 0; }
-.propuesta__activo h3 { margin: 0; font-size: var(--t-5); }
-.propuesta__activo h3 span { color: var(--texto-suave); font-size: var(--t-3); font-weight: 600; }
+.propuesta__activo h3 { margin: 0; font-size: 1.6rem; font-stretch: 72%; letter-spacing: 0.01em; }
+.propuesta__activo h3 span { color: var(--texto-suave); font-size: var(--t-3); font-weight: 600; font-stretch: 100%; letter-spacing: 0; }
 .dir { grid-area: dir; justify-self: start; display: inline-flex; align-items: center; min-height: 30px; padding: 0 var(--e-3); border-radius: var(--r-pildora); font-size: var(--t-3); font-weight: 800; letter-spacing: 0.01em; }
 .dir--compra { color: var(--ok); background: var(--ok-suave); }
 .dir--venta { color: var(--error); background: var(--error-suave); }
@@ -48,7 +147,7 @@ details.aviso ul { margin: var(--e-2) 0 0; padding-left: var(--e-5); }
 .barra span { display: block; height: 100%; min-width: 4px; border-radius: var(--r-pildora); background: var(--acento); }
 .propuesta__tesis { margin: 0; font-size: var(--t-3); }
 .propuesta__datos { display: grid; gap: var(--e-3); margin: 0; font-size: var(--t-2); }
-.propuesta__datos dt { font-weight: 700; color: var(--texto-suave); font-size: var(--t-1); text-transform: uppercase; letter-spacing: 0.04em; }
+.propuesta__datos dt { font-weight: 700; color: var(--texto); font-size: var(--t-2); }
 .propuesta__datos dd { margin: var(--e-1) 0 0; }
 .propuesta__datos ul { margin: 0; padding-left: var(--e-5); }
 .noticias { margin: 0; padding-left: 0; list-style: none; display: grid; gap: var(--e-2); }
@@ -68,7 +167,7 @@ details.aviso ul { margin: var(--e-2) 0 0; padding-left: var(--e-5); }
 .tabla { width: 100%; border-collapse: collapse; font-size: var(--t-2); font-variant-numeric: tabular-nums; }
 .tabla caption:not(.visualmente-oculto) { caption-side: top; text-align: left; font-weight: 600; padding-bottom: var(--e-2); }
 .tabla th, .tabla td { padding: var(--e-2) var(--e-3); border-bottom: 1px solid var(--borde); text-align: left; vertical-align: top; }
-.tabla thead th { color: var(--texto-suave); font-size: var(--t-1); text-transform: uppercase; letter-spacing: 0.04em; }
+.tabla thead th { color: var(--texto-suave); font-size: var(--t-2); font-weight: 700; }
 .tabla--compacta th, .tabla--compacta td { padding: var(--e-1) var(--e-2); }
 .enlace { padding: 0; border: 0; background: none; color: var(--acento); font: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 32px; }
 .nulo { color: var(--texto-suave); }

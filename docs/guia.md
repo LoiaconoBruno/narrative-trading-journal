@@ -136,7 +136,7 @@ Dos advertencias honestas. La hora de un commit la puede falsear quien tenga per
 
 ### 7. La pantalla «Propuestas de hoy» y tus decisiones
 
-Arriba, una portada explica el experimento en tres pasos (la IA lee y propone, vos aprobás o rechazás, cinco ruedas después se mide). Debajo, «Cómo viene el experimento» resume el sistema en cinco datos, cada uno con una etiqueta que dice en palabras si está bien o mal: propuestas medidas, aciertos de la IA con su intervalo (comparados con tirar una moneda), si su confianza es creíble (el Brier, comparado con el 0,25 de decir siempre 50 %), si tu filtro suma y cuántas condiciones para pensar en plata real se cumplen. Después vienen las propuestas del día, **ordenadas por confianza** de mayor a menor. Cada tarjeta muestra:
+Arriba, la pizarra de la rueda muestra las propuestas del día como en un tablero de bolsa: el ticker, la dirección y la confianza, de la más confiada a la menos. Debajo, una línea con los tres momentos de cada día (antes de la apertura la IA propone, hasta la apertura vos decidís, cinco ruedas después se mide). Debajo, «Cómo viene el experimento» resume el sistema en cinco datos, cada uno con una etiqueta que dice en palabras si está bien o mal: propuestas medidas, aciertos de la IA con su intervalo (comparados con tirar una moneda), si su confianza es creíble (el Brier, comparado con el 0,25 de decir siempre 50 %), si tu filtro suma y cuántas condiciones para pensar en plata real se cumplen. Después vienen las propuestas del día, **ordenadas por confianza** de mayor a menor. Cada tarjeta muestra:
 
 - el activo, la dirección (▲ compra o ▼ venta) y la confianza, con una barra de 50 a 100;
 - la tesis;

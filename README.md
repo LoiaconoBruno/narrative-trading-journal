@@ -11,7 +11,7 @@
 ![Página: 0 dependencias](https://img.shields.io/badge/p%C3%A1gina-0%20dependencias-brightgreen)
 [![Licencia MIT](https://img.shields.io/badge/licencia-MIT-blue)](LICENSE)
 
-<img src="docs/captura.png" alt="Captura de Narrative Trading Journal: portada con los tres pasos, datos del experimento y propuestas del día ordenadas por confianza" width="800">
+<img src="docs/captura.png" alt="Captura de Narrative Trading Journal: la pizarra de la rueda con las propuestas del día, ordenadas por confianza" width="800">
 
 </div>
 

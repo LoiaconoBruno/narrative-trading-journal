@@ -340,11 +340,29 @@
   });
 
   // ---- Todo junto ----------------------------------------------------------------
+  // La pizarra de la portada: las propuestas de la última rueda, de la más confiada a
+  // la menos. Sin propuestas todavía, muestra la watchlist con guiones.
+  function pizarra() {
+    const dia = D.dias[D.dias.length - 1];
+    const fila = (tk, dir, conf, i) => `<li style="--i:${i}"><span class="pizarra__tk">${esc(tk)}</span><span class="pizarra__dir pizarra__dir--${dir || "nada"}">${dir === "compra" ? "▲ Compra" : dir === "venta" ? "▼ Venta" : "Sin propuesta"}</span><span class="pizarra__conf">${conf === null ? "—" : `${conf}${NB}%`}</span></li>`;
+    if (dia) {
+      $("pizarra-titulo").textContent = `Rueda del ${fechaLarga(dia.fecha)}`;
+      $("pizarra-filas").innerHTML = Bitacora.ranking(dia.propuestas).map((p, i) => fila(p.activo, p.direccion, p.confianza, i)).join("");
+      const abierta = ahora().getTime() < Date.parse(dia.aperturaEn);
+      $("pizarra-pie").textContent = `Ordenadas por la confianza de la IA. ${abierta ? `Se pueden aprobar o rechazar hasta las ${hora(dia.aperturaEn)}.` : "El mercado ya abrió para esta rueda."}`;
+    } else {
+      $("pizarra-titulo").textContent = "Pizarra de la rueda";
+      $("pizarra-filas").innerHTML = (D.watchlist.activos || []).map((a, i) => fila(a.ticker, null, null, i)).join("");
+      $("pizarra-pie").textContent = D.watchlist.activos && D.watchlist.activos.length ? "Todavía no hay propuestas: aparecen acá cada día hábil, antes de la apertura." : "Sin datos.";
+    }
+  }
+
   function pintar() {
     lista = Bitacora.unir(D.dias, D.resultados, D.decisiones);
     const rs = Bitacora.resumen(lista);
     const u = Bitacora.umbral(rs);
     avisos();
+    pizarra();
     tablero(rs, u);
     hoy(rs);
     indices();
