@@ -4,7 +4,7 @@
 
 **Una IA lee noticias reales y propone en qué invertir. La bitácora mide si sirve.** Plata simulada, tesis selladas antes del resultado.
 
-[**▶ Probala en vivo**](https://loiaconobruno.github.io/narrative-trading-journal/) · [Ver el ejemplo](https://loiaconobruno.github.io/narrative-trading-journal/?ejemplo) · [**📄 Paper y guía**](https://loiaconobruno.github.io/narrative-trading-journal/guia.html) · [Cómo funciona](#cómo-funciona) · [Limitaciones](#limitaciones)
+[**▶ Probala en vivo**](https://loiaconobruno.github.io/narrative-trading-journal/) · [Ver el ejemplo](https://loiaconobruno.github.io/narrative-trading-journal/?ejemplo) · [**📄 Paper y guía**](https://loiaconobruno.github.io/narrative-trading-journal-paper/) · [Cómo funciona](#cómo-funciona) · [Limitaciones](#limitaciones)
 
 [![Tests](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/tests.yml/badge.svg)](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/tests.yml)
 [![Pipeline diario](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/pipeline.yml/badge.svg)](https://github.com/LoiaconoBruno/narrative-trading-journal/actions/workflows/pipeline.yml)
@@ -116,7 +116,7 @@ node pipeline/correr.js --seco --horas=6 --salida=/tmp/prueba   # noticias reale
 
 ## Paper de uso y guía
 
-[`guia.html`](https://loiaconobruno.github.io/narrative-trading-journal/guia.html) (fuente en [`docs/guia.md`](docs/guia.md), generada con `python3 tools/guia.py`) tiene el paper de uso completo (pipeline, índices, sellos, métricas, umbral, costos) y una guía de unas 30 páginas sobre la idea de fondo, con 44 referencias verificadas.
+El repositorio [`narrative-trading-journal-paper`](https://github.com/LoiaconoBruno/narrative-trading-journal-paper) ([leelo en la web](https://loiaconobruno.github.io/narrative-trading-journal-paper/)) tiene el paper de uso completo (pipeline, índices, sellos, métricas, umbral, costos) y una guía de unas 30 páginas sobre la idea de fondo, con 44 referencias verificadas.
 
 ## Licencia
 

@@ -117,7 +117,7 @@ const Bitacora = (() => {
   }
 
   // Criterios para considerar plata real. Es una vara propia, no una regla del mercado:
-  // ver docs/guia.md, «Umbral para plata real».
+  // ver el paper (https://github.com/LoiaconoBruno/narrative-trading-journal-paper), «Umbral para plata real».
   function umbral(r) {
     const criterios = [
       { clave: "cerradas", nombre: "Propuestas cerradas", actual: r.cerradas, objetivo: `${UMBRAL.cerradas} o más`, ok: r.cerradas >= UMBRAL.cerradas },
